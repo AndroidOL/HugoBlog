@@ -1,0 +1,4 @@
+baseURL = 'https://www.tianhao.me/'
+languageCode = 'zh-CN'
+title = '牙刷刷的小站'
+theme = 'ananke'
