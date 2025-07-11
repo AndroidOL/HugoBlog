@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 牙刷刷的小站</title>
+    <link>https://www.tianhao.me/posts/</link>
+    <description>Recent content in Posts on 牙刷刷的小站</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 11 Jul 2025 15:25:51 +0800</lastBuildDate>
+    <atom:link href="https://www.tianhao.me/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo 网站搭建入门</title>
+      <link>https://www.tianhao.me/posts/hello/</link>
+      <pubDate>Fri, 11 Jul 2025 15:25:51 +0800</pubDate>
+      <guid>https://www.tianhao.me/posts/hello/</guid>
+      <description>&lt;p&gt;本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;一准备工作下载安装-hugo-与-git&#34;&gt;一、准备工作：下载安装 Hugo 与 Git&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-手动下载安装-hugo&#34;&gt;1.1 手动下载安装 Hugo&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;打开 &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34;&gt;Hugo 官方 Releases 页面&lt;/a&gt;。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;下载对应 macOS 的扩展版（Extended），如：&#xA;&lt;code&gt;hugo_extended_0.148.0_darwin-universal.tar.gz&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;在终端执行以下命令：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/Downloads&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo mv hugo /usr/local/bin/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chmod +x /usr/local/bin/hugo&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;验证安装：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo version&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;确认输出包含 &lt;code&gt;extended&lt;/code&gt; 字样。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;12-安装并确认-git&#34;&gt;1.2 安装并确认 Git&lt;/h3&gt;&#xA;&lt;p&gt;macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git --version&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;确保能正常显示 Git 版本号。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;二创建-hugo-项目&#34;&gt;二、创建 Hugo 项目&lt;/h2&gt;&#xA;&lt;h3 id=&#34;21-创建新网站&#34;&gt;2.1 创建新网站&lt;/h3&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo new site www-blog&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;其中 &lt;code&gt;www-blog&lt;/code&gt; 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
