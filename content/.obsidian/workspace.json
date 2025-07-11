@@ -1,0 +1,182 @@
+{
+  "main": {
+    "id": "bd111779c2f8c407",
+    "type": "split",
+    "children": [
+      {
+        "id": "255c2b9de3fc4968",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1c9270e5cd02b8f0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/nt-web-assets.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "nt-web-assets"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4cc01386bd24ad11",
+    "type": "split",
+    "children": [
+      {
+        "id": "97daffa81bc811bf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7f7f177d8aaf3566",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "81d38fcbff4ddd5f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "2f77f69d1199dbdc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "af7c354d3f41a1dc",
+    "type": "split",
+    "children": [
+      {
+        "id": "40671d4ead97a8aa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e37525bb9a4f69be",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "posts/nt-web-assets.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "nt-web-assets 的反向链接列表"
+            }
+          },
+          {
+            "id": "2ed9f18c7d525be3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "posts/nt-web-assets.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "nt-web-assets 的出链列表"
+            }
+          },
+          {
+            "id": "4efe176a3c9755e7",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "9b425bf452b5d073",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "posts/nt-web-assets.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "nt-web-assets 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "1c9270e5cd02b8f0",
+  "lastOpenFiles": [
+    "posts/550e8400-e29b-41d4-a716-446655440000.png",
+    "1..md",
+    "posts/nt-web-assets.md",
+    "7957dee5a99ebc694a3bdc4090048d88.jpg.md",
+    "posts/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg",
+    "posts/CleanShot 2025-07-11 at 20.52.37@2x.png",
+    "posts/7957dee5a99ebc694a3bdc4090048d88.jpg",
+    "posts/7957dee5a99ebc694a3bdc4090048d88.png"
+  ]
+}
