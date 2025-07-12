@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://www.tianhao.me/posts/nt-assets-creative/</loc>
-    <lastmod>2025-07-12T17:42:38+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/</loc>
-    <lastmod>2025-07-12T17:42:38+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/</loc>
-    <lastmod>2025-07-12T17:42:38+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/rk-camera-capture-merge/</loc>
-    <lastmod>2025-07-12T17:10:27+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/rk-camera-capture-webui/</loc>
-    <lastmod>2025-07-12T16:19:04+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/rk-camera-capture/</loc>
-    <lastmod>2025-07-12T15:38:51+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/nt-web-assets/</loc>
-    <lastmod>2025-07-11T19:43:25+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/posts/hello/</loc>
-    <lastmod>2025-07-11T15:25:51+08:00</lastmod>
-  </url><url>
-    <loc>https://www.tianhao.me/categories/</loc>
-  </url><url>
-    <loc>https://www.tianhao.me/tags/</loc>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <sitemap>
+    <loc>http://localhost:1313/zh-cn/sitemap.xml</loc>
+    
+      <lastmod>2025-07-12T17:42:38+08:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>http://localhost:1313/en/sitemap.xml</loc>
+    
+  </sitemap>
+  
+</sitemapindex>

@@ -1,178 +1,227 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。\n">
+<title>Hugo 网站搭建入门</title>
+
+<link rel='canonical' href='http://localhost:1313/posts/hello/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="Hugo 网站搭建入门">
+<meta property='og:description' content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。\n">
+<meta property='og:url' content='http://localhost:1313/posts/hello/'>
+<meta property='og:site_name' content='牙刷刷的小站'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-11T15:25:51&#43;08:00'/><meta property='article:modified_time' content='2025-07-11T15:25:51&#43;08:00'/>
+<meta name="twitter:title" content="Hugo 网站搭建入门">
+<meta name="twitter:description" content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">牙刷刷的小站</a></h1>
+            <h2 class="site-description">欢迎来到牙刷刷的小站</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/AndroidOL'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>中文</option>
+                                
+                                    <option value="http://localhost:1313/en/" >English</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
     
-    <title>Hugo 网站搭建入门 | 牙刷刷的小站</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。
 
-一、准备工作：下载安装 Hugo 与 Git
-1.1 手动下载安装 Hugo
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
 
-
-打开 Hugo 官方 Releases 页面。
-
-
-下载对应 macOS 的扩展版（Extended），如：
-hugo_extended_0.148.0_darwin-universal.tar.gz。
-
-
-在终端执行以下命令：
-cd ~/Downloads
-tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz
-sudo mv hugo /usr/local/bin/
-chmod &#43;x /usr/local/bin/hugo
-
-
-验证安装：
-hugo version
-
-
-确认输出包含 extended 字样。
-
-1.2 安装并确认 Git
-macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：
-git --version
-确保能正常显示 Git 版本号。
-
-二、创建 Hugo 项目
-2.1 创建新网站
-hugo new site www-blog
-
-其中 www-blog 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。">
-    <meta name="generator" content="Hugo 0.148.0">
-    
-    
-    
-      <meta name="robots" content="index, follow">
-    
+    <div class="article-details">
     
 
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/hello/">Hugo 网站搭建入门</a>
+        </h2>
     
-<link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
-
-
-
-
-    
-
-
-    
-      
-
-    
-
-    
-
-    
-      <link rel="canonical" href="https://www.tianhao.me/posts/hello/">
-    
-
-    <meta property="og:url" content="https://www.tianhao.me/posts/hello/">
-  <meta property="og:site_name" content="牙刷刷的小站">
-  <meta property="og:title" content="Hugo 网站搭建入门">
-  <meta property="og:description" content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。
-一、准备工作：下载安装 Hugo 与 Git 1.1 手动下载安装 Hugo 打开 Hugo 官方 Releases 页面。
-下载对应 macOS 的扩展版（Extended），如： hugo_extended_0.148.0_darwin-universal.tar.gz。
-在终端执行以下命令：
-cd ~/Downloads tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz sudo mv hugo /usr/local/bin/ chmod &#43;x /usr/local/bin/hugo 验证安装：
-hugo version 确认输出包含 extended 字样。
-1.2 安装并确认 Git macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：
-git --version 确保能正常显示 Git 版本号。
-二、创建 Hugo 项目 2.1 创建新网站 hugo new site www-blog 其中 www-blog 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-07-11T15:25:51+08:00">
-    <meta property="article:modified_time" content="2025-07-11T15:25:51+08:00">
-
-  <meta itemprop="name" content="Hugo 网站搭建入门">
-  <meta itemprop="description" content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。
-一、准备工作：下载安装 Hugo 与 Git 1.1 手动下载安装 Hugo 打开 Hugo 官方 Releases 页面。
-下载对应 macOS 的扩展版（Extended），如： hugo_extended_0.148.0_darwin-universal.tar.gz。
-在终端执行以下命令：
-cd ~/Downloads tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz sudo mv hugo /usr/local/bin/ chmod &#43;x /usr/local/bin/hugo 验证安装：
-hugo version 确认输出包含 extended 字样。
-1.2 安装并确认 Git macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：
-git --version 确保能正常显示 Git 版本号。
-二、创建 Hugo 项目 2.1 创建新网站 hugo new site www-blog 其中 www-blog 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。">
-  <meta itemprop="datePublished" content="2025-07-11T15:25:51+08:00">
-  <meta itemprop="dateModified" content="2025-07-11T15:25:51+08:00">
-  <meta itemprop="wordCount" content="239">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Hugo 网站搭建入门">
-  <meta name="twitter:description" content="本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。
-一、准备工作：下载安装 Hugo 与 Git 1.1 手动下载安装 Hugo 打开 Hugo 官方 Releases 页面。
-下载对应 macOS 的扩展版（Extended），如： hugo_extended_0.148.0_darwin-universal.tar.gz。
-在终端执行以下命令：
-cd ~/Downloads tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz sudo mv hugo /usr/local/bin/ chmod &#43;x /usr/local/bin/hugo 验证安装：
-hugo version 确认输出包含 extended 字样。
-1.2 安装并确认 Git macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：
-git --version 确保能正常显示 Git 版本号。
-二、创建 Hugo 项目 2.1 创建新网站 hugo new site www-blog 其中 www-blog 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。">
-
-      
-    
-	
-  </head><body class="ma0 avenir bg-near-white production">
-
-    
-   
-  
-
-  <header>
-    <div class="bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l center items-center justify-between">
-    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
-      
-        牙刷刷的小站
-      
-    </a>
-    <div class="flex-l items-center">
-      
-
-      
-      <div class="ananke-socials"></div>
-
+        
     </div>
-  </div>
-</nav>
 
-    </div>
-  </header>
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">111151&#43;08-711</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
 
 
 
-    <main class="pb7" role="main">
-      
-  
-  
-  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
-    <header class="mt4 w-100">
-      <aside class="instapaper_ignoref b helvetica tracked ttu">
-          
-        Posts
-      </aside><div id="sharing" class="mt3 ananke-socials"></div>
-<h1 class="f1 athelas mt3 mb1">Hugo 网站搭建入门</h1>
-      
-      
-      
-      <time class="f6 mv4 dib tracked" datetime="2025-07-11T15:25:51+08:00">July 11, 2025</time>
-      
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
 
-      
-      
-    </header>
-    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。</p>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。</p>
 <hr>
-<h2 id="一准备工作下载安装-hugo-与-git">一、准备工作：下载安装 Hugo 与 Git</h2>
-<h3 id="11-手动下载安装-hugo">1.1 手动下载安装 Hugo</h3>
-<ol>
+<h2 id="一准备工作下载安装-hugo-与-git">一、准备工作：下载安装 Hugo 与 Git
+</h2><h3 id="11-手动下载安装-hugo">1.1 手动下载安装 Hugo
+</h3><ol>
 <li>
-<p>打开 <a href="https://github.com/gohugoio/hugo/releases">Hugo 官方 Releases 页面</a>。</p>
+<p>打开 <a class="link" href="https://github.com/gohugoio/hugo/releases"  target="_blank" rel="noopener"
+    >Hugo 官方 Releases 页面</a>。</p>
 </li>
 <li>
 <p>下载对应 macOS 的扩展版（Extended），如：
@@ -180,124 +229,362 @@ git --version 确保能正常显示 Git 版本号。
 </li>
 <li>
 <p>在终端执行以下命令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd ~/Downloads
-</span></span><span style="display:flex;"><span>tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz
-</span></span><span style="display:flex;"><span>sudo mv hugo /usr/local/bin/
-</span></span><span style="display:flex;"><span>chmod +x /usr/local/bin/hugo
-</span></span></code></pre></div></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> ~/Downloads
+</span></span><span class="line"><span class="cl">tar -zxvf hugo_extended_0.148.0_darwin-universal.tar.gz
+</span></span><span class="line"><span class="cl">sudo mv hugo /usr/local/bin/
+</span></span><span class="line"><span class="cl">chmod +x /usr/local/bin/hugo
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
 <li>
 <p>验证安装：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo version
-</span></span></code></pre></div></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo version
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
 </ol>
 <p>确认输出包含 <code>extended</code> 字样。</p>
 <hr>
-<h3 id="12-安装并确认-git">1.2 安装并确认 Git</h3>
-<p>macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git --version
-</span></span></code></pre></div><p>确保能正常显示 Git 版本号。</p>
+<h3 id="12-安装并确认-git">1.2 安装并确认 Git
+</h3><p>macOS 默认自带 Git，如果没有，可按提示安装 Xcode Command Line Tools：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>确保能正常显示 Git 版本号。</p>
 <hr>
-<h2 id="二创建-hugo-项目">二、创建 Hugo 项目</h2>
-<h3 id="21-创建新网站">2.1 创建新网站</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo new site www-blog
-</span></span></code></pre></div><blockquote>
+<h2 id="二创建-hugo-项目">二、创建 Hugo 项目
+</h2><h3 id="21-创建新网站">2.1 创建新网站
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new site www-blog
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>其中 <code>www-blog</code> 是新建的文件夹名称，可以随意取名，不影响博客标题或内容，只是项目根目录名称。</p></blockquote>
-<h3 id="22-进入项目目录">2.2 进入项目目录</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd www-blog
-</span></span></code></pre></div><hr>
-<h2 id="三添加主题">三、添加主题</h2>
-<h3 id="31-通过-git-添加官方主题以-ananke-为例">3.1 通过 Git 添加官方主题（以 Ananke 为例）</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git init
-</span></span><span style="display:flex;"><span>git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
-</span></span></code></pre></div><blockquote>
+<h3 id="22-进入项目目录">2.2 进入项目目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> www-blog
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="三添加主题">三、添加主题
+</h2><h3 id="31-通过-git-添加官方主题以-ananke-为例">3.1 通过 Git 添加官方主题（以 Ananke 为例）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git init
+</span></span><span class="line"><span class="cl">git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p><strong>提示</strong>：如果遇到代理或网络问题，建议手动下载 ZIP 并解压到 <code>themes/ananke</code> 文件夹。</p></blockquote>
-<h3 id="32-修改配置文件启用主题">3.2 修改配置文件启用主题</h3>
-<p>编辑项目根目录下的 <code>hugo.toml</code>，添加或修改如下内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">baseURL</span> = <span style="color:#e6db74">&#34;http://example.org/&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">languageCode</span> = <span style="color:#e6db74">&#34;zh-CN&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">title</span> = <span style="color:#e6db74">&#34;我的 Hugo 博客&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">theme</span> = <span style="color:#e6db74">&#34;ananke&#34;</span>
-</span></span></code></pre></div><hr>
-<h2 id="四创建内容文章">四、创建内容文章</h2>
-<h3 id="41-新建一篇-markdown-文章">4.1 新建一篇 Markdown 文章</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo new posts/hello.md
-</span></span></code></pre></div><h3 id="42-编辑文章内容">4.2 编辑文章内容</h3>
-<p>打开 <code>content/posts/hello.md</code>，将 <code>draft: true</code> 改为 <code>draft: false</code>，示例内容如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span><span style="color:#f92672">title</span>: <span style="color:#e6db74">&#34;Hello Hugo&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">date</span>: <span style="color:#e6db74">2025-07-11T14:00:00</span><span style="color:#ae81ff">+08</span>:<span style="color:#ae81ff">00</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">draft</span>: <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">这是我使用 Hugo 创建的第一篇博客文章。  </span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">欢迎阅读并分享！</span>
-</span></span></code></pre></div><hr>
-<h2 id="五本地预览网站">五、本地预览网站</h2>
-<p>启动 Hugo 本地服务器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo server -D
-</span></span></code></pre></div><p>然后打开浏览器访问：</p>
-<pre tabindex="0"><code>http://localhost:1313
-</code></pre><p>你会看到主题渲染的博客首页和你的文章。</p>
+<h3 id="32-修改配置文件启用主题">3.2 修改配置文件启用主题
+</h3><p>编辑项目根目录下的 <code>hugo.toml</code>，添加或修改如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="nx">baseURL</span> <span class="p">=</span> <span class="s2">&#34;http://example.org/&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">languageCode</span> <span class="p">=</span> <span class="s2">&#34;zh-CN&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">title</span> <span class="p">=</span> <span class="s2">&#34;我的 Hugo 博客&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">theme</span> <span class="p">=</span> <span class="s2">&#34;ananke&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="四创建内容文章">四、创建内容文章
+</h2><h3 id="41-新建一篇-markdown-文章">4.1 新建一篇 Markdown 文章
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/hello.md
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="42-编辑文章内容">4.2 编辑文章内容
+</h3><p>打开 <code>content/posts/hello.md</code>，将 <code>draft: true</code> 改为 <code>draft: false</code>，示例内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Hello Hugo&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="ld">2025-07-11T14:00:00</span><span class="m">+08</span><span class="p">:</span><span class="m">00</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">draft</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">这是我使用 Hugo 创建的第一篇博客文章。  </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">欢迎阅读并分享！</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="五本地预览网站">五、本地预览网站
+</h2><p>启动 Hugo 本地服务器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo server -D
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后打开浏览器访问：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://localhost:1313
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>你会看到主题渲染的博客首页和你的文章。</p>
 <hr>
-<h2 id="六生成静态站点文件">六、生成静态站点文件</h2>
-<p>退出服务器后，执行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo
-</span></span></code></pre></div><p>静态页面生成在项目根目录的 <code>public/</code> 文件夹。</p>
+<h2 id="六生成静态站点文件">六、生成静态站点文件
+</h2><p>退出服务器后，执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>静态页面生成在项目根目录的 <code>public/</code> 文件夹。</p>
 <hr>
-<h2 id="七部署到-github-pages">七、部署到 GitHub Pages</h2>
-<h3 id="71-新建-github-仓库假设名为-www-blog">7.1 新建 GitHub 仓库（假设名为 <code>www-blog</code>）</h3>
-<h3 id="72-推送-public-文件夹内容到-gh-pages-分支">7.2 推送 <code>public</code> 文件夹内容到 <code>gh-pages</code> 分支</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd public
-</span></span><span style="display:flex;"><span>git init
-</span></span><span style="display:flex;"><span>git remote add origin https://github.com/你的用户名/www-blog.git
-</span></span><span style="display:flex;"><span>git checkout -b gh-pages
-</span></span><span style="display:flex;"><span>git add .
-</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;首次部署 Hugo 站点&#34;</span>
-</span></span><span style="display:flex;"><span>git push -f origin gh-pages
-</span></span></code></pre></div><h3 id="73-在-github-仓库设置页面开启-github-pages">7.3 在 GitHub 仓库设置页面开启 GitHub Pages</h3>
-<ul>
+<h2 id="七部署到-github-pages">七、部署到 GitHub Pages
+</h2><h3 id="71-新建-github-仓库假设名为-www-blog">7.1 新建 GitHub 仓库（假设名为 <code>www-blog</code>）
+</h3><h3 id="72-推送-public-文件夹内容到-gh-pages-分支">7.2 推送 <code>public</code> 文件夹内容到 <code>gh-pages</code> 分支
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> public
+</span></span><span class="line"><span class="cl">git init
+</span></span><span class="line"><span class="cl">git remote add origin https://github.com/你的用户名/www-blog.git
+</span></span><span class="line"><span class="cl">git checkout -b gh-pages
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;首次部署 Hugo 站点&#34;</span>
+</span></span><span class="line"><span class="cl">git push -f origin gh-pages
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="73-在-github-仓库设置页面开启-github-pages">7.3 在 GitHub 仓库设置页面开启 GitHub Pages
+</h3><ul>
 <li>进入 <code>Settings</code> → <code>Pages</code></li>
 <li>选择 <code>gh-pages</code> 分支作为发布源</li>
 <li>保存后等待几分钟即可访问：</li>
 </ul>
-<pre tabindex="0"><code>https://你的用户名.github.io/www-blog/
-</code></pre><hr>
-<h2 id="八总结说明">八、总结说明</h2>
-<ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://你的用户名.github.io/www-blog/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="八总结说明">八、总结说明
+</h2><ul>
 <li><strong><code>hugo new site &lt;文件夹名&gt;</code> 中的文件夹名只是项目目录名</strong>，不影响博客标题或 URL，只是你电脑里的文件夹名称。</li>
 <li><strong>博客标题和网站配置在 <code>hugo.toml</code> 中设置</strong>，你可以随时修改。</li>
 <li><strong>主题通过 Git 子模块添加</strong>，也可用手动下载主题 ZIP 包的方式。</li>
 <li><strong>写文章时注意将 <code>draft</code> 设置为 <code>false</code>，否则文章不会发布</strong>。</li>
 <li><strong>本地用 <code>hugo server -D</code> 预览，生成静态站点用 <code>hugo</code> 命令。</strong></li>
 </ul>
-<ul class="pa0">
-  
-</ul>
-<div class="mt6 instapaper_ignoref">
-      
-      
-      </div>
-    </div>
 
-    <aside class="w-30-l mt6-l">
+</section>
 
 
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
 
 
-</aside>
 
-  </article>
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
 
-    </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://www.tianhao.me/" >
-    &copy;  牙刷刷的小站 2025 
-  </a>
-    <div><div class="ananke-socials"></div>
-</div>
-  </div>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 牙刷刷
+    </section>
+    
+    <section class="powerby">
+        
+            牙刷刷的小站 版权所有 © 2025 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
 </footer>
 
-  </body>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.eb0b4f7d2b56921d46684f5c8a7512abf121421b231f8cee2286290b6ee341da.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>
