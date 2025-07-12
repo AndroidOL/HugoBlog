@@ -42,6 +42,16 @@
   </url><url>
     <loc>https://www.tianhao.me/posts/nt-web-assets/</loc>
     <lastmod>2025-07-11T19:43:25+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.tianhao.me/en/posts/nt-web-assets/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://www.tianhao.me/posts/nt-web-assets/"
+                />
   </url><url>
     <loc>https://www.tianhao.me/posts/hello/</loc>
     <lastmod>2025-07-11T15:25:51+08:00</lastmod>

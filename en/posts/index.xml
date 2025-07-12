@@ -7,7 +7,220 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>牙刷刷</copyright>
-        <lastBuildDate>Fri, 11 Jul 2025 15:25:51 +0800</lastBuildDate><atom:link href="https://www.tianhao.me/en/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 11 Jul 2025 19:43:25 +0800</lastBuildDate><atom:link href="https://www.tianhao.me/en/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Next-Terminal: A Secure Access Solution for Home Networks</title>
+        <link>https://www.tianhao.me/en/posts/nt-web-assets/</link>
+        <pubDate>Fri, 11 Jul 2025 19:43:25 +0800</pubDate>
+        
+        <guid>https://www.tianhao.me/en/posts/nt-web-assets/</guid>
+        <description>&lt;h1 id=&#34;a-new-secure-access-approach-for-home-networks-next-terminal-in-practice&#34;&gt;A New Secure Access Approach for Home Networks: Next-Terminal in Practice
+&lt;/h1&gt;&lt;p&gt;With the rapid spread of information technology, more and more home users are building their own servers, mini NAS systems, and home automation centers. At the same time, how to &lt;strong&gt;securely, efficiently, and cost-effectively&lt;/strong&gt; access these devices from the public internet has become an urgent issue to solve.&lt;/p&gt;
+&lt;p&gt;The open-source project &lt;a class=&#34;link&#34; href=&#34;https://github.com/dushixiang/next-terminal&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Next-Terminal&lt;/a&gt; (abbreviated as NT) offers an elegant solution for home users. It’s not only open-source and free, but also extremely lightweight (only around 200MB) and highly performant. It can be easily deployed on public nodes such as Alibaba Cloud, Tencent Cloud, or other lightweight cloud instances, serving as the single entry point for all traffic. NT securely forwards requests to various services in the home network, achieving &lt;strong&gt;unified management of secure proxy and access control&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-security-risks-of-exposing-home-networks-to-the-internet&#34;&gt;1. Security Risks of Exposing Home Networks to the Internet
+&lt;/h2&gt;&lt;h3 id=&#34;11-common-ways-of-home-network-exposure&#34;&gt;1.1 Common Ways of Home Network Exposure
+&lt;/h3&gt;&lt;p&gt;Suppose you’ve set up a website or NAS device at home and want to access it remotely. Common approaches include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Port forwarding on the home router&lt;/strong&gt; (using a public IP);&lt;/li&gt;
+&lt;li&gt;Domain name resolution to a dynamic home IP (Dynamic DNS);&lt;/li&gt;
+&lt;li&gt;Direct connection using IPv6 address.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;12-potential-security-risks-from-public-exposure&#34;&gt;1.2 Potential Security Risks from Public Exposure
+&lt;/h3&gt;&lt;p&gt;Regardless of whether you use DDNS or IPv6, exposing your device to the public internet means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A significantly increased chance of being scanned by attackers;&lt;/li&gt;
+&lt;li&gt;Anyone who knows your IP can try to connect;&lt;/li&gt;
+&lt;li&gt;If there are any vulnerabilities (e.g., outdated NAS, PHP flaws), attackers might compromise your internal network.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In IPv4, NAT allows many internal devices to access the internet using one public IP. However, with IPv6, &lt;strong&gt;each device can have its own public IP&lt;/strong&gt;, which facilitates direct communication but introduces new threats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Predictable addresses — attackers can guess address ranges based on a known /60 prefix;&lt;/li&gt;
+&lt;li&gt;Every device at home (router, NAS, cameras, smart TVs) has its own IPv6 address;&lt;/li&gt;
+&lt;li&gt;Knowing one server address could allow inference of the entire network prefix;&lt;/li&gt;
+&lt;li&gt;Despite the vast IPv6 space, &lt;strong&gt;targeted scans and brute force attacks are still feasible&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;Many home devices lack strict IPv6 firewall configurations, meaning open ports might be directly accessible.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Security Alert&lt;/strong&gt;: The global reachability of IPv6 makes home devices more vulnerable to targeting and attacks.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-how-does-next-terminal-help-solve-these-problems&#34;&gt;2. How Does Next-Terminal Help Solve These Problems?
+&lt;/h2&gt;&lt;p&gt;Next-Terminal uses a &amp;ldquo;unified entry proxy + fine-grained access control&amp;rdquo; approach with key features such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;No exposure of internal ports to the public internet&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ports open only to trusted entry points&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Supports fine-grained access control and login authentication&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Auditable, manageable, and authorizable access to your services&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph LR
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    A[User] --&amp;gt; B[NT Public Node]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    B --&amp;gt; C[Home Gateway]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    C --&amp;gt; D[Internal Services]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;scenario-securely-exposing-a-home-website-to-the-internet&#34;&gt;Scenario: Securely Exposing a Home Website to the Internet
+&lt;/h3&gt;&lt;p&gt;Suppose you have a website at &lt;code&gt;http://192.168.1.100:8080&lt;/code&gt; on your home network and want to access it from outside — but don’t want anyone to be able to connect directly.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Traditional method&lt;/strong&gt;: Port forwarding — risky&lt;br&gt;
+&lt;strong&gt;Improved method&lt;/strong&gt;: Use NT for &lt;strong&gt;reverse proxy + authentication&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;steps-with-public-ip&#34;&gt;Steps (With Public IP):
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;Deploy Next-Terminal on a public server (e.g., Alibaba Cloud);&lt;/li&gt;
+&lt;li&gt;Configure your home firewall to &lt;strong&gt;only allow the public server’s IP to access relevant ports&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;Add internal assets (like your home website) and configure port mapping;&lt;/li&gt;
+&lt;li&gt;Enable authentication and authorization (multi-factor authentication, passkeys, etc.);&lt;/li&gt;
+&lt;li&gt;External users access via NT’s web interface — requests are proxied to your internal service after verification.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;steps-without-public-ip&#34;&gt;Steps (Without Public IP):
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;Deploy Next-Terminal on a public server;&lt;/li&gt;
+&lt;li&gt;Deploy NT secure gateway in your home (e.g., container or mini host);&lt;/li&gt;
+&lt;li&gt;Register the NT gateway with the NT platform;&lt;/li&gt;
+&lt;li&gt;Add internal assets to be accessed;&lt;/li&gt;
+&lt;li&gt;Enable authentication and authorization;&lt;/li&gt;
+&lt;li&gt;External users access through NT — the public server proxies requests to the NT gateway, which forwards to internal services.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://chatgpt.com/c/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;NT Architecture&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-firewall-strategy-trust-only-the-public-server-reject-everything-else&#34;&gt;3. Firewall Strategy: Trust Only the Public Server, Reject Everything Else
+&lt;/h2&gt;&lt;p&gt;To further enhance security, configure firewall rules on your home router or soft router:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Only allow the NT public server’s IP&lt;/strong&gt; (e.g., Alibaba Cloud) to access specific ports (like NAS port 8080);&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Block all other IPs from accessing these ports&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This ensures &amp;ldquo;&lt;strong&gt;only trusted servers can access your home network&lt;/strong&gt;&amp;rdquo;, preventing connections even if your public IP is known.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Example firewall rule (assuming home gateway uses iptables)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Allow access from Alibaba Cloud IP to port 8080&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;iptables -A INPUT -p tcp -s &amp;lt;NT_Public_IP&amp;gt; --dport &lt;span class=&#34;m&#34;&gt;8080&lt;/span&gt; -j ACCEPT
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Drop access from all other IPs to port 8080&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;iptables -A INPUT -p tcp --dport &lt;span class=&#34;m&#34;&gt;8080&lt;/span&gt; -j DROP
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://chatgpt.com/c/550e8400-e29b-41d4-a716-446655440000.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Firewall Configuration&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-comparison-with-traditional-vpn-and-frp-solutions&#34;&gt;4. Comparison with Traditional VPN and FRP Solutions
+&lt;/h2&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Feature&lt;/th&gt;
+          &lt;th&gt;VPN&lt;/th&gt;
+          &lt;th&gt;FRP&lt;/th&gt;
+          &lt;th&gt;NextTerminal ✅&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Security&lt;/td&gt;
+          &lt;td&gt;High (requires hardware)&lt;/td&gt;
+          &lt;td&gt;Medium (requires setup)&lt;/td&gt;
+          &lt;td&gt;High (granular control)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Usability&lt;/td&gt;
+          &lt;td&gt;Requires client&lt;/td&gt;
+          &lt;td&gt;Complex config&lt;/td&gt;
+          &lt;td&gt;Web-based access&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Deployment Difficulty&lt;/td&gt;
+          &lt;td&gt;Easy (hardware)&lt;/td&gt;
+          &lt;td&gt;Moderate&lt;/td&gt;
+          &lt;td&gt;Easy (container deployment)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;User Access Control&lt;/td&gt;
+          &lt;td&gt;✅ Supported&lt;/td&gt;
+          &lt;td&gt;❌ Not supported&lt;/td&gt;
+          &lt;td&gt;✅ Supported&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Logging &amp;amp; Audit&lt;/td&gt;
+          &lt;td&gt;Hard to query&lt;/td&gt;
+          &lt;td&gt;❌ Not supported&lt;/td&gt;
+          &lt;td&gt;✅ Supported&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Internal Service Proxy&lt;/td&gt;
+          &lt;td&gt;✅ Auto config&lt;/td&gt;
+          &lt;td&gt;Manual port mapping&lt;/td&gt;
+          &lt;td&gt;✅ Auto proxy&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-extended-use-cases-more-than-just-website-access&#34;&gt;5. Extended Use Cases: More Than Just Website Access
+&lt;/h2&gt;&lt;p&gt;NextTerminal can proxy not only websites, but also:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Remote SSH access to home Linux machines;&lt;/li&gt;
+&lt;li&gt;RDP access to Windows desktops;&lt;/li&gt;
+&lt;li&gt;NAS directory browsing (e.g., via WebDAV);&lt;/li&gt;
+&lt;li&gt;Access to camera admin panels;&lt;/li&gt;
+&lt;li&gt;Connect to HomeAssistant, Aria2, Transmission, and other home services.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All with a unified entry point and unified identity authentication.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;a-note-to-developers-dont-let-open-source-go-unnoticed&#34;&gt;A Note to Developers: Don’t Let Open Source Go Unnoticed
+&lt;/h2&gt;&lt;p&gt;Next-Terminal is a free, open-source secure ops platform developed by a Chinese developer and maintained actively on GitHub. Whether you&amp;rsquo;re a developer, ops engineer, or home user, it&amp;rsquo;s strongly recommended to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Try deploying and using the platform yourself;&lt;/li&gt;
+&lt;li&gt;Give the project a ⭐️ Star;&lt;/li&gt;
+&lt;li&gt;Share it in your blog or community;&lt;/li&gt;
+&lt;li&gt;Suggest features or contribute docs to help improve it!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-references-and-recommended-links&#34;&gt;📘 References and Recommended Links
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Project: &lt;a class=&#34;link&#34; href=&#34;https://github.com/dushixiang/next-terminal&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/dushixiang/next-terminal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Docs: &lt;a class=&#34;link&#34; href=&#34;https://next-terminal.dushixiang.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://next-terminal.dushixiang.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;IPv6 Security (Google Research Paper): &lt;a class=&#34;link&#34; href=&#34;https://research.google/pubs/pub46246/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://research.google/pubs/pub46246/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Home Security Setup Guide (Zhihu): &lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/620203743&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/620203743&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion
+&lt;/h2&gt;&lt;p&gt;Next-Terminal is not just a great enterprise remote ops platform — it’s also &lt;strong&gt;perfect for home users&lt;/strong&gt;. By building a unified and secure access point, you no longer have to worry about public internet attacks, deal with complex VPN setups, or risk exposing your internal network.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The security of home IT infrastructure is something every tech enthusiast should care about. Start today by deploying Next-Terminal and level up your network security.&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
         <title>Getting Started with Hugo Website Setup</title>
         <link>https://www.tianhao.me/en/posts/hello/</link>
         <pubDate>Fri, 11 Jul 2025 15:25:51 +0800</pubDate>
@@ -62,17 +275,13 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-mysql&#34; data-lang=&#34;mysql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Verify&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;the&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;installation&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bash&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;version&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Make&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sure&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;the&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;includes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;the&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;word&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;extended&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
@@ -234,15 +443,9 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;73-enable-github-pages-in-repository-settings&#34;&gt;7.3 Enable GitHub Pages in Repository Settings
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Go to &lt;code&gt;Settings&lt;/code&gt; → &lt;code&gt;Pages&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Select the &lt;code&gt;gh-pages&lt;/code&gt; branch as the publishing source&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;After saving, wait a few minutes and visit:&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Go to &lt;code&gt;Settings&lt;/code&gt; → &lt;code&gt;Pages&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Select the &lt;code&gt;gh-pages&lt;/code&gt; branch as the publishing source&lt;/li&gt;
+&lt;li&gt;After saving, wait a few minutes and visit:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -255,21 +458,11 @@
 &lt;/div&gt;&lt;hr&gt;
 &lt;h2 id=&#34;8-summary-notes&#34;&gt;8. Summary Notes
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;The folder name in &lt;code&gt;hugo new site &amp;lt;folder-name&amp;gt;&lt;/code&gt; is only the project directory name&lt;/strong&gt;, it does not affect the blog title or URL.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Blog title and site configuration are set in &lt;code&gt;hugo.toml&lt;/code&gt;&lt;/strong&gt;, and can be changed anytime.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Themes are added via Git submodules&lt;/strong&gt;, but you can also download and extract the theme manually.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Make sure to set &lt;code&gt;draft: false&lt;/code&gt; when writing posts&lt;/strong&gt;, or they won’t be published.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Use &lt;code&gt;hugo server -D&lt;/code&gt; for local preview, and &lt;code&gt;hugo&lt;/code&gt; command to generate static site files.&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The folder name in &lt;code&gt;hugo new site &amp;lt;folder-name&amp;gt;&lt;/code&gt; is only the project directory name&lt;/strong&gt;, it does not affect the blog title or URL.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Blog title and site configuration are set in &lt;code&gt;hugo.toml&lt;/code&gt;&lt;/strong&gt;, and can be changed anytime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Themes are added via Git submodules&lt;/strong&gt;, but you can also download and extract the theme manually.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Make sure to set &lt;code&gt;draft: false&lt;/code&gt; when writing posts&lt;/strong&gt;, or they won’t be published.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use &lt;code&gt;hugo server -D&lt;/code&gt; for local preview, and &lt;code&gt;hugo&lt;/code&gt; command to generate static site files.&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>

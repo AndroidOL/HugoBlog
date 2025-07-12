@@ -2,21 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.tianhao.me/en/posts/hello/</loc>
-    <lastmod>2025-07-11T15:25:51+08:00</lastmod>
+    <loc>https://www.tianhao.me/en/posts/nt-web-assets/</loc>
+    <lastmod>2025-07-11T19:43:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://www.tianhao.me/posts/hello/"
+                href="https://www.tianhao.me/posts/nt-web-assets/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.tianhao.me/en/posts/hello/"
+                href="https://www.tianhao.me/en/posts/nt-web-assets/"
                 />
   </url><url>
     <loc>https://www.tianhao.me/en/posts/</loc>
-    <lastmod>2025-07-11T15:25:51+08:00</lastmod>
+    <lastmod>2025-07-11T19:43:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -29,7 +29,7 @@
                 />
   </url><url>
     <loc>https://www.tianhao.me/en/</loc>
-    <lastmod>2025-07-11T15:25:51+08:00</lastmod>
+    <lastmod>2025-07-11T19:43:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -39,6 +39,19 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://www.tianhao.me/en/"
+                />
+  </url><url>
+    <loc>https://www.tianhao.me/en/posts/hello/</loc>
+    <lastmod>2025-07-11T15:25:51+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://www.tianhao.me/posts/hello/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.tianhao.me/en/posts/hello/"
                 />
   </url><url>
     <loc>https://www.tianhao.me/en/categories/</loc>
