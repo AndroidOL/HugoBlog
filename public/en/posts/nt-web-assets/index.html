@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Exploring how to use Next-Terminal to build a secure access solution for home networks and mitigate public exposure risks">
+<title>Next-Terminal: A Secure Access Solution for Home Networks</title>
+
+<link rel='canonical' href='https://www.tianhao.me/en/posts/nt-web-assets/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="Next-Terminal: A Secure Access Solution for Home Networks">
+<meta property='og:description' content="Exploring how to use Next-Terminal to build a secure access solution for home networks and mitigate public exposure risks">
+<meta property='og:url' content='https://www.tianhao.me/en/posts/nt-web-assets/'>
+<meta property='og:site_name' content='Toothbrush&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-11T19:43:25&#43;08:00'/><meta property='article:modified_time' content='2025-07-11T19:43:25&#43;08:00'/>
+<meta name="twitter:title" content="Next-Terminal: A Secure Access Solution for Home Networks">
+<meta name="twitter:description" content="Exploring how to use Next-Terminal to build a secure access solution for home networks and mitigate public exposure risks">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/en/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/en">Toothbrush&#39;s Blog</a></h1>
+            <h2 class="site-description">Welcome to Toothbrush&#39;s blog</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/AndroidOL'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://www.tianhao.me/" >中文</option>
+                                
+                                    <option value="https://www.tianhao.me/en/" selected>English</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/en/posts/nt-web-assets/">Next-Terminal: A Secure Access Solution for Home Networks</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Exploring how to use Next-Terminal to build a secure access solution for home networks and mitigate public exposure risks
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 11, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://www.tianhao.me/posts/nt-web-assets/" class="link">中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="a-new-secure-access-approach-for-home-networks-next-terminal-in-practice">A New Secure Access Approach for Home Networks: Next-Terminal in Practice
+</h1><p>With the rapid spread of information technology, more and more home users are building their own servers, mini NAS systems, and home automation centers. At the same time, how to <strong>securely, efficiently, and cost-effectively</strong> access these devices from the public internet has become an urgent issue to solve.</p>
+<p>The open-source project <a class="link" href="https://github.com/dushixiang/next-terminal"  target="_blank" rel="noopener"
+    >Next-Terminal</a> (abbreviated as NT) offers an elegant solution for home users. It’s not only open-source and free, but also extremely lightweight (only around 200MB) and highly performant. It can be easily deployed on public nodes such as Alibaba Cloud, Tencent Cloud, or other lightweight cloud instances, serving as the single entry point for all traffic. NT securely forwards requests to various services in the home network, achieving <strong>unified management of secure proxy and access control</strong>.</p>
+<hr>
+<h2 id="1-security-risks-of-exposing-home-networks-to-the-internet">1. Security Risks of Exposing Home Networks to the Internet
+</h2><h3 id="11-common-ways-of-home-network-exposure">1.1 Common Ways of Home Network Exposure
+</h3><p>Suppose you’ve set up a website or NAS device at home and want to access it remotely. Common approaches include:</p>
+<ul>
+<li><strong>Port forwarding on the home router</strong> (using a public IP);</li>
+<li>Domain name resolution to a dynamic home IP (Dynamic DNS);</li>
+<li>Direct connection using IPv6 address.</li>
+</ul>
+<h3 id="12-potential-security-risks-from-public-exposure">1.2 Potential Security Risks from Public Exposure
+</h3><p>Regardless of whether you use DDNS or IPv6, exposing your device to the public internet means:</p>
+<ul>
+<li>A significantly increased chance of being scanned by attackers;</li>
+<li>Anyone who knows your IP can try to connect;</li>
+<li>If there are any vulnerabilities (e.g., outdated NAS, PHP flaws), attackers might compromise your internal network.</li>
+</ul>
+<p>In IPv4, NAT allows many internal devices to access the internet using one public IP. However, with IPv6, <strong>each device can have its own public IP</strong>, which facilitates direct communication but introduces new threats:</p>
+<ul>
+<li>Predictable addresses — attackers can guess address ranges based on a known /60 prefix;</li>
+<li>Every device at home (router, NAS, cameras, smart TVs) has its own IPv6 address;</li>
+<li>Knowing one server address could allow inference of the entire network prefix;</li>
+<li>Despite the vast IPv6 space, <strong>targeted scans and brute force attacks are still feasible</strong>;</li>
+<li>Many home devices lack strict IPv6 firewall configurations, meaning open ports might be directly accessible.</li>
+</ul>
+<blockquote>
+<p><strong>Security Alert</strong>: The global reachability of IPv6 makes home devices more vulnerable to targeting and attacks.</p></blockquote>
+<hr>
+<h2 id="2-how-does-next-terminal-help-solve-these-problems">2. How Does Next-Terminal Help Solve These Problems?
+</h2><p>Next-Terminal uses a &ldquo;unified entry proxy + fine-grained access control&rdquo; approach with key features such as:</p>
+<ul>
+<li><strong>No exposure of internal ports to the public internet</strong>;</li>
+<li><strong>Ports open only to trusted entry points</strong>;</li>
+<li><strong>Supports fine-grained access control and login authentication</strong>;</li>
+<li><strong>Auditable, manageable, and authorizable access to your services</strong>.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph LR
+</span></span><span class="line"><span class="cl">    A[User] --&gt; B[NT Public Node]
+</span></span><span class="line"><span class="cl">    B --&gt; C[Home Gateway]
+</span></span><span class="line"><span class="cl">    C --&gt; D[Internal Services]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="scenario-securely-exposing-a-home-website-to-the-internet">Scenario: Securely Exposing a Home Website to the Internet
+</h3><p>Suppose you have a website at <code>http://192.168.1.100:8080</code> on your home network and want to access it from outside — but don’t want anyone to be able to connect directly.</p>
+<p><strong>Traditional method</strong>: Port forwarding — risky<br>
+<strong>Improved method</strong>: Use NT for <strong>reverse proxy + authentication</strong></p>
+<h3 id="steps-with-public-ip">Steps (With Public IP):
+</h3><ol>
+<li>Deploy Next-Terminal on a public server (e.g., Alibaba Cloud);</li>
+<li>Configure your home firewall to <strong>only allow the public server’s IP to access relevant ports</strong>;</li>
+<li>Add internal assets (like your home website) and configure port mapping;</li>
+<li>Enable authentication and authorization (multi-factor authentication, passkeys, etc.);</li>
+<li>External users access via NT’s web interface — requests are proxied to your internal service after verification.</li>
+</ol>
+<h3 id="steps-without-public-ip">Steps (Without Public IP):
+</h3><ol>
+<li>Deploy Next-Terminal on a public server;</li>
+<li>Deploy NT secure gateway in your home (e.g., container or mini host);</li>
+<li>Register the NT gateway with the NT platform;</li>
+<li>Add internal assets to be accessed;</li>
+<li>Enable authentication and authorization;</li>
+<li>External users access through NT — the public server proxies requests to the NT gateway, which forwards to internal services.</li>
+</ol>
+<p><img src="/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="NT Architecture"
+	
+	
+></p>
+<hr>
+<h2 id="3-firewall-strategy-trust-only-the-public-server-reject-everything-else">3. Firewall Strategy: Trust Only the Public Server, Reject Everything Else
+</h2><p>To further enhance security, configure firewall rules on your home router or soft router:</p>
+<ul>
+<li><strong>Only allow the NT public server’s IP</strong> (e.g., Alibaba Cloud) to access specific ports (like NAS port 8080);</li>
+<li><strong>Block all other IPs from accessing these ports</strong>.</li>
+</ul>
+<p>This ensures &ldquo;<strong>only trusted servers can access your home network</strong>&rdquo;, preventing connections even if your public IP is known.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Example firewall rule (assuming home gateway uses iptables)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Allow access from Alibaba Cloud IP to port 8080</span>
+</span></span><span class="line"><span class="cl">iptables -A INPUT -p tcp -s &lt;NT_Public_IP&gt; --dport <span class="m">8080</span> -j ACCEPT
+</span></span><span class="line"><span class="cl"><span class="c1"># Drop access from all other IPs to port 8080</span>
+</span></span><span class="line"><span class="cl">iptables -A INPUT -p tcp --dport <span class="m">8080</span> -j DROP
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/550e8400-e29b-41d4-a716-446655440000.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Firewall Configuration"
+	
+	
+></p>
+<hr>
+<h2 id="4-comparison-with-traditional-vpn-and-frp-solutions">4. Comparison with Traditional VPN and FRP Solutions
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Feature</th>
+          <th>VPN</th>
+          <th>FRP</th>
+          <th>NextTerminal ✅</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Security</td>
+          <td>High (requires hardware)</td>
+          <td>Medium (requires setup)</td>
+          <td>High (granular control)</td>
+      </tr>
+      <tr>
+          <td>Usability</td>
+          <td>Requires client</td>
+          <td>Complex config</td>
+          <td>Web-based access</td>
+      </tr>
+      <tr>
+          <td>Deployment Difficulty</td>
+          <td>Easy (hardware)</td>
+          <td>Moderate</td>
+          <td>Easy (container deployment)</td>
+      </tr>
+      <tr>
+          <td>User Access Control</td>
+          <td>✅ Supported</td>
+          <td>❌ Not supported</td>
+          <td>✅ Supported</td>
+      </tr>
+      <tr>
+          <td>Logging &amp; Audit</td>
+          <td>Hard to query</td>
+          <td>❌ Not supported</td>
+          <td>✅ Supported</td>
+      </tr>
+      <tr>
+          <td>Internal Service Proxy</td>
+          <td>✅ Auto config</td>
+          <td>Manual port mapping</td>
+          <td>✅ Auto proxy</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<h2 id="5-extended-use-cases-more-than-just-website-access">5. Extended Use Cases: More Than Just Website Access
+</h2><p>NextTerminal can proxy not only websites, but also:</p>
+<ul>
+<li>Remote SSH access to home Linux machines;</li>
+<li>RDP access to Windows desktops;</li>
+<li>NAS directory browsing (e.g., via WebDAV);</li>
+<li>Access to camera admin panels;</li>
+<li>Connect to HomeAssistant, Aria2, Transmission, and other home services.</li>
+</ul>
+<p>All with a unified entry point and unified identity authentication.</p>
+<hr>
+<h2 id="a-note-to-developers-dont-let-open-source-go-unnoticed">A Note to Developers: Don’t Let Open Source Go Unnoticed
+</h2><p>Next-Terminal is a free, open-source secure ops platform developed by a Chinese developer and maintained actively on GitHub. Whether you&rsquo;re a developer, ops engineer, or home user, it&rsquo;s strongly recommended to:</p>
+<ul>
+<li>Try deploying and using the platform yourself;</li>
+<li>Give the project a ⭐️ Star;</li>
+<li>Share it in your blog or community;</li>
+<li>Suggest features or contribute docs to help improve it!</li>
+</ul>
+<hr>
+<h2 id="-references-and-recommended-links">📘 References and Recommended Links
+</h2><ul>
+<li>Project: <a class="link" href="https://github.com/dushixiang/next-terminal"  target="_blank" rel="noopener"
+    >https://github.com/dushixiang/next-terminal</a></li>
+<li>Docs: <a class="link" href="https://next-terminal.dushixiang.com/"  target="_blank" rel="noopener"
+    >https://next-terminal.dushixiang.com</a></li>
+<li>IPv6 Security (Google Research Paper): <a class="link" href="https://research.google/pubs/pub46246/"  target="_blank" rel="noopener"
+    >https://research.google/pubs/pub46246/</a></li>
+<li>Home Security Setup Guide (Zhihu): <a class="link" href="https://zhuanlan.zhihu.com/p/620203743"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/620203743</a></li>
+</ul>
+<hr>
+<h2 id="conclusion">Conclusion
+</h2><p>Next-Terminal is not just a great enterprise remote ops platform — it’s also <strong>perfect for home users</strong>. By building a unified and secure access point, you no longer have to worry about public internet attacks, deal with complex VPN setups, or risk exposing your internal network.</p>
+<blockquote>
+<p>The security of home IT infrastructure is something every tech enthusiast should care about. Start today by deploying Next-Terminal and level up your network security.</p></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 牙刷刷
+    </section>
+    
+    <section class="powerby">
+        
+            牙刷刷的小站 版权所有 © 2025 <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

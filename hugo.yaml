@@ -1,0 +1,105 @@
+baseURL: https://www.tianhao.me/
+languageCode: zh-CN
+title: 牙刷刷的小站
+copyright: 牙刷刷
+
+theme: hugo-theme-stack
+
+DefaultContentLanguage: zh-cn
+hasCJKLanguage: true
+
+languages:
+  zh-cn:
+    languageName: 中文
+    title: 牙刷刷的小站
+    weight: 1
+    params:
+      sidebar:
+        subtitle: 欢迎来到牙刷刷的小站
+  en:
+    languageName: English
+    title: Toothbrush's Blog
+    weight: 2
+    params:
+      sidebar:
+        subtitle: Welcome to Toothbrush's blog
+
+pagination:
+  pagerSize: 5
+
+permalinks:
+  post: /p/:slug/
+  page: /:slug/
+
+params:
+  mainSections:
+    - posts
+  featuredImageField: image
+  rssFullContent: true
+  favicon: /favicon.ico
+
+  footer:
+    since: 2023
+    customText: 牙刷刷的小站 版权所有 © 2025
+
+  dateFormat:
+    published: Jan 02, 2006
+    lastUpdated: Jan 02, 2006 15:04 MST
+  sidebar:
+    emoji: "🍥"
+    subtitle: 一个小小的博客，分享生活点滴
+    avatar:
+      enabled: true
+      local: true
+      src: img/avatar.png
+
+  article:
+    math: false
+    toc: true
+    readingTime: true
+    license:
+      enabled: true
+      default: "Licensed under CC BY-NC-SA 4.0"
+
+  comments:
+    enabled: false  # 关闭评论，或者删掉整个 comments 块
+
+menu:
+  main: []
+  social:
+    - identifier: github
+      name: GitHub
+      url: https://github.com/AndroidOL
+      params:
+        icon: brand-github
+
+markup:
+    goldmark:
+        extensions:
+            passthrough:
+                enable: true
+                delimiters:
+                    block:
+                        - - \[
+                          - \]
+                        - - $$
+                          - $$
+                    inline:
+                        - - \(
+                          - \)
+        renderer:
+            ## Set to true if you have HTML content inside Markdown
+            unsafe: true
+    tableOfContents:
+        endLevel: 4
+        ordered: true
+        startLevel: 2
+    highlight:
+        noClasses: false
+        codeFences: true
+        guessSyntax: true
+        lineNoStart: 1
+        lineNos: true
+        lineNumbersInTable: true
+        tabWidth: 4
+

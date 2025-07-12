@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="There’s a quiet poetry flowing through everyday life, often unnoticed. I became fascinated with time-lapse photography because it compresses long stretches of time into captivating moments, letting us witness slow transformations with the naked eye—it’s like magic unfolding through time.\nSo I dusted off an old USB webcam that had been asleep in a drawer for years, sparked by a gentle thought: I want to record life’s subtle breath—the kind we often overlook in our hurried pace. Like the succulent on the balcony slowly stretching toward sunlight; the drifting clouds outside, sculpted into shapes by an invisible hand; or how the evening sun casts long, warm shadows across the living room floor inch by inch…\n">
+<title>My Smart Assistant: A Time-Lapse System That Knows When to Be Lazy</title>
+
+<link rel='canonical' href='https://www.tianhao.me/en/posts/rk-camera-capture/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="My Smart Assistant: A Time-Lapse System That Knows When to Be Lazy">
+<meta property='og:description' content="There’s a quiet poetry flowing through everyday life, often unnoticed. I became fascinated with time-lapse photography because it compresses long stretches of time into captivating moments, letting us witness slow transformations with the naked eye—it’s like magic unfolding through time.\nSo I dusted off an old USB webcam that had been asleep in a drawer for years, sparked by a gentle thought: I want to record life’s subtle breath—the kind we often overlook in our hurried pace. Like the succulent on the balcony slowly stretching toward sunlight; the drifting clouds outside, sculpted into shapes by an invisible hand; or how the evening sun casts long, warm shadows across the living room floor inch by inch…\n">
+<meta property='og:url' content='https://www.tianhao.me/en/posts/rk-camera-capture/'>
+<meta property='og:site_name' content='Toothbrush&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-12T15:38:51&#43;08:00'/><meta property='article:modified_time' content='2025-07-12T15:38:51&#43;08:00'/>
+<meta name="twitter:title" content="My Smart Assistant: A Time-Lapse System That Knows When to Be Lazy">
+<meta name="twitter:description" content="There’s a quiet poetry flowing through everyday life, often unnoticed. I became fascinated with time-lapse photography because it compresses long stretches of time into captivating moments, letting us witness slow transformations with the naked eye—it’s like magic unfolding through time.\nSo I dusted off an old USB webcam that had been asleep in a drawer for years, sparked by a gentle thought: I want to record life’s subtle breath—the kind we often overlook in our hurried pace. Like the succulent on the balcony slowly stretching toward sunlight; the drifting clouds outside, sculpted into shapes by an invisible hand; or how the evening sun casts long, warm shadows across the living room floor inch by inch…\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/en/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/en">Toothbrush&#39;s Blog</a></h1>
+            <h2 class="site-description">Welcome to Toothbrush&#39;s blog</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/AndroidOL'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://www.tianhao.me/" >中文</option>
+                                
+                                    <option value="https://www.tianhao.me/en/" selected>English</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/en/posts/rk-camera-capture/">My Smart Assistant: A Time-Lapse System That Knows When to Be Lazy</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 12, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://www.tianhao.me/posts/rk-camera-capture/" class="link">中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>There’s a quiet poetry flowing through everyday life, often unnoticed. I became fascinated with time-lapse photography because it compresses long stretches of time into captivating moments, letting us witness slow transformations with the naked eye—it’s like magic unfolding through time.</p>
+<p>So I dusted off an old USB webcam that had been asleep in a drawer for years, sparked by a gentle thought: I want to record life’s subtle breath—the kind we often overlook in our hurried pace. Like the succulent on the balcony slowly stretching toward sunlight; the drifting clouds outside, sculpted into shapes by an invisible hand; or how the evening sun casts long, warm shadows across the living room floor inch by inch…</p>
+<p>Project Code: <a class="link" href="https://github.com/AndroidOL/camera-capture"  target="_blank" rel="noopener"
+    >https://github.com/AndroidOL/camera-capture</a></p>
+<h2 id="from-diligent-fool-to-smart-slacker-a-shift-in-philosophy">From &ldquo;Diligent Fool&rdquo; to &ldquo;Smart Slacker&rdquo;: A Shift in Philosophy
+</h2><p>At first, my approach was simple and direct, like many others: write a script to turn the webcam into a tireless “model worker,” snapping a photo every minute on the dot. The moment I finished and successfully ran the code, I felt a wave of achievement. But that joy quickly turned into mixed disappointment the next morning.</p>
+<p>There they were—1,440 neatly organized photos, a testament to my program’s “diligence.” Yet scrolling through them felt lifeless and frozen. Especially during the long hours of the night—say, between 3:00 and 3:01 AM—everything looked identical: the dust on the coffee table hadn’t budged, and even the air seemed still. I realized I hadn’t built a tool for recording “change,” but a factory for producing repetition.</p>
+<p>Once I calmly calculated this “digital legacy,” the scale of the problem became clear:</p>
+<h3 id="alarming-storage-consumption">Alarming Storage Consumption
+</h3><ul>
+<li><strong>Daily output</strong>: 43,200 photos</li>
+<li><strong>Monthly output</strong>: ~1,296,000 photos</li>
+<li><strong>Annual output</strong>: Over 473 million photos</li>
+</ul>
+<p>Assuming 0.2MB per 1920×1080 photo, that’s nearly 8GB per day—reasonable for a desktop setup, but excessive for embedded devices like the ESP32 or RK boards.</p>
+<h3 id="destructive-post-production-workload">Destructive Post-Production Workload
+</h3><ul>
+<li><strong>Footage screening</strong>: To produce a few minutes of highlights, you’d have to sift through hundreds of thousands of nearly identical “waste shots.”</li>
+<li><strong>Time cost</strong>: This isn’t artistic creation—it’s soul-draining manual labor.</li>
+</ul>
+<p>To better illustrate the contrast, I created this table:</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Feature</th>
+          <th>“Diligent Fool” Mode</th>
+          <th>“Smart Slacker” Mode</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Operating Principle</strong></td>
+          <td>Uniform, scheduled capturing</td>
+          <td>Intelligent, on-demand capture</td>
+      </tr>
+      <tr>
+          <td><strong>Photos per hour</strong></td>
+          <td>Constant 1,800</td>
+          <td>Dozens to hundreds (based on changes)</td>
+      </tr>
+      <tr>
+          <td><strong>Storage efficiency</strong></td>
+          <td>Very low, linear explosion</td>
+          <td>Very high, only saves useful data</td>
+      </tr>
+      <tr>
+          <td><strong>Post-workload</strong></td>
+          <td>Huge, painful screening</td>
+          <td>Minimal, most shots are valuable</td>
+      </tr>
+      <tr>
+          <td><strong>Final output quality</strong></td>
+          <td>Filled with static “waste time”</td>
+          <td>Tight pacing, focused on change</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>Clearly, the latter is what I needed—a wise system that knows <strong>when to act and when to chill</strong>.</p>
+<h2 id="giving-the-camera-a-brain-laziness-as-productivity">Giving the Camera a Brain: Laziness as Productivity
+</h2><p>So I set out to upgrade my system with real intelligence. This time, I didn’t teach it to work harder—I taught it a more elegant skill: how to slack off smartly.</p>
+<p>Its core principle is like a seasoned intelligence officer who only reports when something actually matters—no boring “all clear” updates, just action when there&rsquo;s movement.</p>
+<p>To empower this discernment, I designed a three-step “smart pipeline”:</p>
+<h3 id="visual-purification-seeing-the-essence-not-the-surface">Visual Purification: Seeing the Essence, Not the Surface
+</h3><p>Morning cool light and evening warm light may color the scene differently, even if nothing has moved. So before comparison, the system converts both current and archived frames to grayscale “sketch mode.”</p>
+<h3 id="quantifying-change-giving-weight-to-differences">Quantifying Change: Giving Weight to Differences
+</h3><p>The system overlays two grayscale images pixel by pixel, generating a “change map.” It calculates the percentage of light areas to assess the degree of difference.</p>
+<h3 id="the-art-of-decision-making-a-smart-laziness-threshold">The Art of Decision-Making: A Smart Laziness Threshold
+</h3><p>I set a threshold—say 0.5%. If the detected change is below this, the frame is skipped. Only significant changes are recorded, saving resources and capturing only the meaningful.</p>
+<h2 id="a-thoughtful-housekeeper-a-system-that-runs-itself">A Thoughtful Housekeeper: A System That Runs Itself
+</h2><p>To ensure 24/7 stability, I implemented multiple layers of resilience:</p>
+<h3 id="a-custom-biological-clock">A Custom “Biological Clock”
+</h3><p>Sampling frequencies tuned to household rhythms:</p>
+<ul>
+<li><strong>Morning glow (6–8 AM)</strong>: every 5 seconds</li>
+<li><strong>Daytime activity (8 AM–6 PM)</strong>: every 2 seconds</li>
+<li><strong>Evening mood (6–10 PM)</strong>: every 5 seconds</li>
+<li><strong>Midnight patrol (10 PM–6 AM)</strong>: every 10 seconds</li>
+</ul>
+<h3 id="strategic-storage-management">Strategic Storage Management
+</h3><p>When storage usage hits 85%, the system auto-deletes the oldest photos to maintain space.</p>
+<h3 id="survival-instincts">Survival Instincts
+</h3><p>In case of power loss or camera disconnects, the system includes auto-reconnect and retry logic to self-heal and stay online.</p>
+<h2 id="unexpected-rewards-becoming-a-quiet-observer-of-life">Unexpected Rewards: Becoming a Quiet Observer of Life
+</h2><p>The results far exceeded my expectations. It allowed me to observe:</p>
+<h3 id="a-miniature-home-sundial">A Miniature Home Sundial
+</h3><p>By tracking sunlight shifts on the floor, it became a massive clock of shadow and light.</p>
+<h3 id="the-silent-dance-of-plants">The Silent Dance of Plants
+</h3><p>In time-lapse, my succulent turned toward the sun like it was engaging in a dialogue with life.</p>
+<h3 id="the-moving-landscape-outside">The Moving Landscape Outside
+</h3><p>It captured drifting clouds, droplets melting from the roof after snow, everything like a living poem.</p>
+<h2 id="the-joy-of-creation-lies-in-the-process">The Joy of Creation Lies in the Process
+</h2><p>From the initial spark to a mature system, this 0-to-1 journey gave me indescribable satisfaction.</p>
+<p>The beauty of technology isn’t in complexity, but in how we use it to understand and embrace life.</p>
+<p>If you also feel passion for creation, start with a tiny idea. The real barrier is never the tools—it’s whether you&rsquo;re willing to tinker, to explore.</p>
+<p><strong>Begin your journey now. Go capture your own, one-of-a-kind story in time.</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 牙刷刷
+    </section>
+    
+    <section class="powerby">
+        
+            牙刷刷的小站 版权所有 © 2025 <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

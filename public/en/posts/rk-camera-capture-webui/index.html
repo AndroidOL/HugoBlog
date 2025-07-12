@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="It&rsquo;s been a while since I last shared my “lazy” photography system—the one that decides when to snap a photo and when to chill. This little helper has been quietly working for me all this time. But as time went on, a new pain point emerged: while its inner workings were smart, the way I interacted with it remained&hellip; primitive.\nProject code: https://github.com/AndroidOL/camera-capture/tree/main/web-ui\nFrom “Command Line Archaeology” to “Tap of a Finger”: A Revolution in Experience In the past, every interaction with the system felt like digital archaeology inside a server:\n">
+<title>My Smart Assistant 2.0: Giving the “Lazy” Photography System a Panoramic Window</title>
+
+<link rel='canonical' href='https://www.tianhao.me/en/posts/rk-camera-capture-webui/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="My Smart Assistant 2.0: Giving the “Lazy” Photography System a Panoramic Window">
+<meta property='og:description' content="It&rsquo;s been a while since I last shared my “lazy” photography system—the one that decides when to snap a photo and when to chill. This little helper has been quietly working for me all this time. But as time went on, a new pain point emerged: while its inner workings were smart, the way I interacted with it remained&hellip; primitive.\nProject code: https://github.com/AndroidOL/camera-capture/tree/main/web-ui\nFrom “Command Line Archaeology” to “Tap of a Finger”: A Revolution in Experience In the past, every interaction with the system felt like digital archaeology inside a server:\n">
+<meta property='og:url' content='https://www.tianhao.me/en/posts/rk-camera-capture-webui/'>
+<meta property='og:site_name' content='Toothbrush&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-12T16:19:04&#43;08:00'/><meta property='article:modified_time' content='2025-07-12T16:19:04&#43;08:00'/>
+<meta name="twitter:title" content="My Smart Assistant 2.0: Giving the “Lazy” Photography System a Panoramic Window">
+<meta name="twitter:description" content="It&rsquo;s been a while since I last shared my “lazy” photography system—the one that decides when to snap a photo and when to chill. This little helper has been quietly working for me all this time. But as time went on, a new pain point emerged: while its inner workings were smart, the way I interacted with it remained&hellip; primitive.\nProject code: https://github.com/AndroidOL/camera-capture/tree/main/web-ui\nFrom “Command Line Archaeology” to “Tap of a Finger”: A Revolution in Experience In the past, every interaction with the system felt like digital archaeology inside a server:\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/en/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/en">Toothbrush&#39;s Blog</a></h1>
+            <h2 class="site-description">Welcome to Toothbrush&#39;s blog</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/AndroidOL'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://www.tianhao.me/" >中文</option>
+                                
+                                    <option value="https://www.tianhao.me/en/" selected>English</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/en/posts/rk-camera-capture-webui/">My Smart Assistant 2.0: Giving the “Lazy” Photography System a Panoramic Window</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 12, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://www.tianhao.me/posts/rk-camera-capture-webui/" class="link">中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>It&rsquo;s been a while since I last shared my “lazy” photography system—the one that decides when to snap a photo and when to chill. This little helper has been quietly working for me all this time. But as time went on, a new pain point emerged: while its inner workings were smart, the way I interacted with it remained&hellip; primitive.</p>
+<p>Project code: <a class="link" href="https://github.com/AndroidOL/camera-capture/tree/main/web-ui"  target="_blank" rel="noopener"
+    >https://github.com/AndroidOL/camera-capture/tree/main/web-ui</a></p>
+<h2 id="from-command-line-archaeology-to-tap-of-a-finger-a-revolution-in-experience">From “Command Line Archaeology” to “Tap of a Finger”: A Revolution in Experience
+</h2><p>In the past, every interaction with the system felt like digital archaeology inside a server:</p>
+<ul>
+<li>Want to see yesterday’s shots? Fire up your SSH client, connect to the server, and navigate through a maze of directories with <code>cd</code> and <code>ls</code>.</li>
+<li>Want to tweak sensitivity settings? Use Vim or Nano to edit config files, save, and <code>systemctl restart</code>—then cross your fingers you didn’t miss a comma.</li>
+</ul>
+<p>This was cumbersome and emotionally distant. My smart assistant—its joys, its output—was locked behind the black box of a terminal.</p>
+<p>So I opened a window for it: a wide <strong>panoramic floor-to-ceiling window</strong> in the form of a <strong>web control console</strong>, designed for intuitive, elegant interaction—even from the comfort of a couch.</p>
+<p>Now, everything has changed:</p>
+<ul>
+<li>Open a browser and enter the local address;</li>
+<li>A beautiful and powerful interface appears;</li>
+<li>The once-silent background photographer now has a vivid “face” and nimble “hands.”</li>
+</ul>
+<h3 id="its-components">Its components:
+</h3><ul>
+<li><strong>Eyes</strong>: A real-time monitor with zero delay.</li>
+<li><strong>Hands</strong>: Clickable button menus for full control.</li>
+<li><strong>Brain</strong>: Complex logic wrapped in an intuitive design.</li>
+</ul>
+<hr>
+<h2 id="four-superpowers-of-the-web-console">Four Superpowers of the Web Console
+</h2><h3 id="1-time-drawer-a-tiered-photo-archive">1. Time Drawer: A Tiered Photo Archive
+</h3><p>Inspired by real-life “drawers,” navigating photos now feels like opening a set of Russian nesting dolls:</p>
+<ol>
+<li><strong>Year/Month</strong> view: See all months with recordings.</li>
+<li><strong>Daily preview</strong>: Thumbnail grid for each date.</li>
+<li><strong>Hourly drawers</strong>: Tap to reveal 24-hour distributions.</li>
+<li><strong>Minute-level access</strong>: Dig down to individual images.</li>
+</ol>
+<p>Browsing becomes light, fun, and ceremonial.</p>
+<hr>
+<h3 id="2-real-time-window-a-watchful-never-blinking-guardian">2. Real-Time Window: A Watchful, Never-Blinking Guardian
+</h3><p>Tap “Live Monitor,” and the system enters watch mode:</p>
+<ul>
+<li><strong>Heartbeat refresh</strong>: The frontend fetches a new frame every 2.5 seconds.</li>
+<li><strong>Auto-reconnect</strong>: Camera outages are self-healed.</li>
+<li><strong>Night mode</strong>: Auto-dimming for dark environments—no eye strain.</li>
+</ul>
+<hr>
+<h3 id="3-time-tunnel-your-personal-documentary-generator">3. Time Tunnel: Your Personal Documentary Generator
+</h3><p>The “Slideshow” mode is my favorite feature:</p>
+<ul>
+<li>Select any date range (e.g., “2025 Cherry Blossom Season”);</li>
+<li>The system stitches together all relevant photos into a dynamic time-lapse.</li>
+</ul>
+<p>Highlights:</p>
+<ul>
+<li><strong>Slide mode</strong>: Chronologically ordered playback.</li>
+<li><strong>Smooth transitions</strong>: Fade-in/out between shots.</li>
+<li><strong>Timestamp overlay</strong>: Auto-displayed capture time at the bottom.</li>
+</ul>
+<blockquote>
+<p>🎞️ I used this to relive the cherry blossom bloom—from bud to fall—utterly moving and magical.</p></blockquote>
+<hr>
+<h3 id="4-thoughtful-themes-a-smart-and-caring-interface">4. Thoughtful Themes: A Smart and Caring Interface
+</h3><p>As a night owl, I added a theme toggle:</p>
+<ul>
+<li><strong>Day mode</strong>: Blue-white for clarity.</li>
+<li><strong>Night mode</strong>: Deep black and crimson for eye comfort.</li>
+<li><strong>Auto-memory</strong>: Remembers your last-used theme.</li>
+</ul>
+<p>Like a friend who just gets you.</p>
+<hr>
+<h2 id="dev-diary-humanizing-the-system-one-mishap-at-a-time">Dev Diary: Humanizing the System, One Mishap at a Time
+</h2><h3 id="the-midnight-panic">The Midnight Panic
+</h3><p>One night while debugging live view, the screen started flashing like crazy!<br>
+Turned out I mistakenly set <code>250ms</code> instead of <code>2500ms</code>—the camera nearly became a strobe light.</p>
+<h3 id="the-naming-crisis">The Naming Crisis
+</h3><p>Initially, I named my API <code>get_image_list</code>.<br>
+A few weeks later, even I had no clue what it did.</p>
+<hr>
+<h2 id="a-new-lens-on-life-when-tech-becomes-daily-ritual">A New Lens on Life: When Tech Becomes Daily Ritual
+</h2><p>The web console made this system part of my life:</p>
+<ul>
+<li>☕ <strong>Morning coffee ritual</strong>: Wake up with the latest time-lapse visuals.</li>
+<li>🌱 <strong>Plant growth journal</strong>: Weekly recaps via the “Time Tunnel.”</li>
+<li>🖼️ <strong>Family time machine</strong>: Cast time-lapse memories during gatherings.</li>
+</ul>
+<hr>
+<h2 id="an-invitation-to-makers">An Invitation to Makers
+</h2><p>Building this isn’t hard:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ----- Essentials -----</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Hardware: Raspberry Pi / any Linux device + webcam</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Image processing: Python + OpenCV</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Frontend: HTML + JavaScript + CSS</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Backend: PHP</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Each module is like a LEGO block—ready to be customized, expanded, or swapped.</p>
+<hr>
+<blockquote>
+<p>The warmth of technology lies in how we use it to illuminate and document life. I hope you too can open your own “window of time” and watch your story unfold.</p></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 牙刷刷
+    </section>
+    
+    <section class="powerby">
+        
+            牙刷刷的小站 版权所有 © 2025 <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

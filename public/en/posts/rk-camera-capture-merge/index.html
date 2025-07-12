@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Welcome back to my &ldquo;lazy&rdquo; photography system series. In the previous chapters, we witnessed how an ordinary webcam was endowed with the ability to &ldquo;think,&rdquo; and how I built an elegant and convenient &ldquo;control room&rdquo; for it. However, the story doesn&rsquo;t end there. Our clever photographer has been smartly &ldquo;slacking off&rdquo; every day, accurately capturing a vast number of valuable moments. These photos, like scattered pearls, contain the secrets of time, quietly resting deep within the server&rsquo;s hard drive.\n">
+<title>My Smart Assistant 3.0: Building a Fully Automated &#34;Time Screening Room&#34;</title>
+
+<link rel='canonical' href='https://www.tianhao.me/en/posts/rk-camera-capture-merge/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="My Smart Assistant 3.0: Building a Fully Automated \"Time Screening Room\"">
+<meta property='og:description' content="Welcome back to my &ldquo;lazy&rdquo; photography system series. In the previous chapters, we witnessed how an ordinary webcam was endowed with the ability to &ldquo;think,&rdquo; and how I built an elegant and convenient &ldquo;control room&rdquo; for it. However, the story doesn&rsquo;t end there. Our clever photographer has been smartly &ldquo;slacking off&rdquo; every day, accurately capturing a vast number of valuable moments. These photos, like scattered pearls, contain the secrets of time, quietly resting deep within the server&rsquo;s hard drive.\n">
+<meta property='og:url' content='https://www.tianhao.me/en/posts/rk-camera-capture-merge/'>
+<meta property='og:site_name' content='Toothbrush&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-12T17:10:27&#43;08:00'/><meta property='article:modified_time' content='2025-07-12T17:10:27&#43;08:00'/>
+<meta name="twitter:title" content="My Smart Assistant 3.0: Building a Fully Automated \"Time Screening Room\"">
+<meta name="twitter:description" content="Welcome back to my &ldquo;lazy&rdquo; photography system series. In the previous chapters, we witnessed how an ordinary webcam was endowed with the ability to &ldquo;think,&rdquo; and how I built an elegant and convenient &ldquo;control room&rdquo; for it. However, the story doesn&rsquo;t end there. Our clever photographer has been smartly &ldquo;slacking off&rdquo; every day, accurately capturing a vast number of valuable moments. These photos, like scattered pearls, contain the secrets of time, quietly resting deep within the server&rsquo;s hard drive.\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/en/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/en">Toothbrush&#39;s Blog</a></h1>
+            <h2 class="site-description">Welcome to Toothbrush&#39;s blog</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/AndroidOL'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://www.tianhao.me/" >中文</option>
+                                
+                                    <option value="https://www.tianhao.me/en/" selected>English</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/en/posts/rk-camera-capture-merge/">My Smart Assistant 3.0: Building a Fully Automated &#34;Time Screening Room&#34;</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 12, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://www.tianhao.me/posts/rk-camera-capture-merge/" class="link">中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Welcome back to my &ldquo;lazy&rdquo; photography system series. In the previous chapters, we witnessed how an ordinary webcam was endowed with the ability to &ldquo;think,&rdquo; and how I built an elegant and convenient &ldquo;control room&rdquo; for it. However, the story doesn&rsquo;t end there. Our clever photographer has been smartly &ldquo;slacking off&rdquo; every day, accurately capturing a vast number of valuable moments. These photos, like scattered pearls, contain the secrets of time, quietly resting deep within the server&rsquo;s hard drive.</p>
+<p>It&rsquo;s time to string these pearls together, letting them shine brilliantly through the flow of light and shadow. Today, I will show you the final chapter of this project, which I personally find the most exciting — building a fully automated &ldquo;Time Screening Room.&rdquo; At the core of this screening room is a powerful and reliable shell script. It is the &ldquo;behind-the-scenes director&rdquo; of my entire system, entrusted with a sacred mission: before each quiet dawn arrives, automatically merging tens of thousands of photos from the previous day into wonderful time-lapse videos.</p>
+<p>Project code: <a class="link" href="https://github.com/AndroidOL/camera-capture/tree/main/merge"  target="_blank" rel="noopener"
+    >https://github.com/AndroidOL/camera-capture/tree/main/merge</a></p>
+<h2 id="from-material-pileup-to-visual-poems-the-final-billion-step">From &ldquo;Material Pileup&rdquo; to &ldquo;Visual Poems&rdquo;: The Final &ldquo;Billion&rdquo; Step
+</h2><p>Imagine what life would be like without this automated &ldquo;director.&rdquo; It would mean that every day, I’d have to act like a &ldquo;miner&rdquo; in the digital age — manually logging into a remote server to dig through tens of thousands of photos from the previous day, which might amount to dozens of gigabytes; then carefully downloading these &ldquo;raw ores&rdquo; to my local computer; next, launching complex video editing software, painstakingly dragging each photo onto the timeline, setting frame rates, encoders, bitrates&hellip; and finally clicking &ldquo;render&rdquo; after a long wait.</p>
+<p>This entire process is not only a battle of patience and endurance with no creativity but also prone to errors. If one day I forget or get too busy at work and miss it, the &ldquo;visual diary&rdquo; for that day will have an irreplaceable gap. That&rsquo;s not what I want.</p>
+<p>What I need is a fully unattended, extremely stable and reliable, and smart enough automated process. It should be a tireless artist that quietly starts at a fixed time every day, for example, in the dead of night, and like a skilled film editor, carefully arranges the scattered materials of the previous day into a complete film, then elegantly places it on the digital shelf of the &ldquo;family film library,&rdquo; waiting for my review.</p>
+<p>Thus, this labor of love — the automation script <code>daily_photo_to_video.sh</code> — was born. It’s far from a simple ffmpeg command wrapper; it is an industrial-grade robust &ldquo;smart production line.&rdquo;</p>
+<h2 id="the-directors-extraordinary-skills-revealing-the-core-design-of-the-automation-script">The Director&rsquo;s Extraordinary Skills: Revealing the Core Design of the Automation Script
+</h2><p>The design philosophy of this script is <strong>&ldquo;pursue ultimate stability and efficiency.&rdquo;</strong> I armed it to the teeth so that it can calmly handle all foreseeable and even unforeseeable complex situations.</p>
+<h3 id="1-ultimate-efficiency-squeezing-every-drop-of-hardware-potential">1. Ultimate Efficiency: Squeezing Every Drop of Hardware Potential
+</h3><p><strong>Highway — Ramdisk (In-Memory Disk)</strong><br>
+Reading tens of thousands of scattered small images on a traditional hard drive while writing a huge video file immediately exposes disk I/O bottlenecks, making the whole process painfully slow. My solution is radical: directly carve out a high-speed virtual disk (Ramdisk) in the server’s precious memory.</p>
+<p>When the script starts, it first synchronizes all photos to be processed from the photo server to this memory disk via high-speed network. Then, all intensive read-write operations of video synthesis (encoding) are performed entirely on this virtual disk. Memory read/write speeds are tens or even hundreds of times faster than ordinary hard drives, which is like building a &ldquo;star highway&rdquo; that ignores physical laws and travels at light speed for data migration, greatly shortening processing time.</p>
+<p><strong>Professional Engine — Hardware Encoding (HEVC_RKMPP)</strong><br>
+Video encoding is a typical CPU-intensive task. Relying solely on the CPU to &ldquo;hard compute&rdquo; is like asking a versatile but tired butler to do a highly specialized woodworking job — inefficient and causing the server’s &ldquo;heartbeat&rdquo; (CPU usage) to spike and the fans to roar. Fortunately, the server I use (based on Rockchip chips) has a dedicated video processing unit (VPU).</p>
+<p>My script precisely calls ffmpeg and specifies the use of the <code>hevc_rkmpp</code> hardware encoder. This is equivalent to handing the professional work to a specially hired, highly skilled &ldquo;film editor,&rdquo; letting the VPU handle the heaviest encoding tasks, fully freeing the CPU. Meanwhile, I choose the efficient HEVC (H.265) encoding format, which maintains very high picture quality while compressing the video size to about half of traditional H.264, saving massive precious space in my &ldquo;family film library.&rdquo;</p>
+<h3 id="2-foundation-of-stability-industrial-grade-fault-tolerance-and-self-healing">2. Foundation of Stability: Industrial-Grade Fault Tolerance and Self-Healing
+</h3><p>A spaceship sailing alone in the wilderness values not only speed but also its ability to survive cosmic storms. Likewise, a script that needs to run unattended for years requires strong resilience. I built four layers of &ldquo;security protocols&rdquo; to handle various possible accidents.</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Scenario</th>
+          <th>Script’s Smart Response Strategy</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Unexpected script interruption</td>
+          <td>Uses <code>trap</code> cleanup mechanism to automatically clear temp files and unmount Ramdisk on interruption</td>
+      </tr>
+      <tr>
+          <td>Concurrent run conflicts</td>
+          <td>Uses <code>flock</code> file lock to avoid conflicts from multiple instances running concurrently</td>
+      </tr>
+      <tr>
+          <td>Insufficient storage space</td>
+          <td>Pre-checks available space in target path to avoid write failures midway</td>
+      </tr>
+      <tr>
+          <td>Target disk disconnection</td>
+          <td>Automatically switches to backup storage path, ensures task completion, and pauses old task catch-up</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="3-smart-scheduling-never-miss-a-days-highlights">3. Smart Scheduling: Never Miss a Day’s Highlights
+</h3><p>I want every day’s video in my &ldquo;screening room&rdquo; to be complete, like a coherent chronicle. Therefore, the smartest and proudest part of the script is its almost obsessive &ldquo;completion&rdquo; logic.</p>
+<p>When running, the script:</p>
+<ul>
+<li>Reviews logs from the past 7 days, checking for missing or failed videos;</li>
+<li>If omissions are found, it prioritizes filling gaps starting from the earliest day;</li>
+<li>Verifies that remote materials still exist to avoid pointless runs;</li>
+<li>Only after confirming completeness does it process &ldquo;yesterday’s&rdquo; new materials.</li>
+</ul>
+<p>This way, the system gains memory and responsibility, always maintaining a complete &ldquo;visual diary.&rdquo;</p>
+<h2 id="the-birth-of-a-family-epic">The Birth of a &ldquo;Family Epic&rdquo;
+</h2><p>Now, this has become a ritual-filled daily routine. Every morning, when I brew coffee and open the &ldquo;family film library,&rdquo; a brand-new time-lapse video named after yesterday’s date quietly rests there.</p>
+<p>It might capture the entire thunderstorm outside the window, or my figure working late into the night, or simply portray the traces of sunlight flowing through the home.</p>
+<p>This automated script is like a silent but powerful heart, injecting endless vitality into my entire smart photography project. It transforms day-after-day trivial visual data into distilled visual poems full of time’s essence, turning cold data into warm memories, allowing me to truly &ldquo;see&rdquo; and &ldquo;cherish&rdquo; those silently passing moments.</p>
+<h2 id="the-joy-of-creation">The Joy of Creation
+</h2><p>The joy of creation lies here — using code and logic to build a system that automatically creates, organizes, and presents beauty for us.</p>
+<p>Next steps might be training an AI to automatically add the most fitting background music to these videos, or editing &ldquo;weekly highlights.&rdquo;</p>
+<p>The journey to a &ldquo;better life&rdquo; through creation is endless, and that is its true charm.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2023 - 
+        
+        2025 牙刷刷
+    </section>
+    
+    <section class="powerby">
+        
+            牙刷刷的小站 版权所有 © 2025 <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
