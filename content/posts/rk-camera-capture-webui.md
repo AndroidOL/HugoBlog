@@ -6,7 +6,7 @@ title = '我的智能小助手 2.0：给“偷懒”摄影系统开了扇全景�
 
 距离上次分享我的“偷懒”摄影系统已经有段时间了，那个会自己判断何时该拍照、何时该“摸鱼”的小家伙，已经默默地为我工作了很久。但随着时间的推移，一个新的“痛点”开始浮现：尽管它内部很智能，但与它交流的方式却很“原始”。
 
-项目代码：https://github.com/AndroidOL/camera-capture-webui
+项目代码：https://github.com/AndroidOL/camera-capture/tree/main/web-ui
 
 ## 从“命令行考古”到“指尖轻触”：一次体验的革命
 
