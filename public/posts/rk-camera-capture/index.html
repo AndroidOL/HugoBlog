@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>我的智能小助手：一个会“偷懒”的延时摄影系统 | 牙刷刷的小站</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="生活中那些安静流淌、不易察觉的诗意总是令人充满好奇。迷上了延时摄影因为它能将漫长的时间压缩成迷人的瞬间，让我们得以用肉眼观察到那些缓慢发生的变化，这本身就像一种时间的魔法。
+于是，我翻出了家里那个在抽屉里沉睡了数年的 USB 摄像头，心中涌起一个温柔的念头：我想用它来记录，记录那些被我们匆忙忽略的、生活本身的呼吸。比如阳台上那盆多肉，如何在阳光的亲吻下，用我们看不见的速度悄悄舒展；窗外的云朵，又是如何被无形的手塑造成流动的雕塑；甚至是傍晚时分，夕阳如何在客厅的地板上，一寸寸地拉出长长的、温暖的影子……
+从“勤奋的笨蛋”到“聪明的懒汉”：一次理念的进化
+最开始，我的想法和大多数人一样，简单而直接：写一个脚本，让摄像头化身为一个不知疲倦的“劳动模范”，每分钟准时打卡，忠实地拍下一张照片。当我敲下最后一行代码并成功运行的那一刻，心中充满了小小的成就感。然而，这份喜悦在第二天清晨，当我检视成果时，便迅速被一种混杂着困惑与失望的复杂情绪所取代。
+硬盘里，一千四百四十张照片整齐地排列着，它们是我的程序“勤奋”一整天的见证。但我快速滚动预览时，画面却像卡住了一样，静止得令人窒息。尤其是在那漫长的深夜时段，凌晨三点和三点零一分的客厅照片，别说茶几上的灰尘纹丝未动，就连空气本身，似乎都凝固在了那一刻。我忽然意识到，我创造的不是一个记录“变化”的工具，而是一个生产“重复”的工厂。
+当我冷静下来，把这笔“数字遗产”量化后，我才真正理解了问题的严重性：
+惊人的存储消耗：
+
+日产量: 43200 张照片
+月产量: 约 1296000 张照片
+年产量: 超过 473040000 张照片
+
+按每张照片分辨率 1920*1080 存储，每张照片占用大小 0.2MB 计算，每天将消耗近 8GB 的存储空间，对于家庭存储而言这并不算什么。但是对于嵌入式设备，ESP32 抑或是 RK 的单板机而言有点超出限制。
+毁灭性的后期工作：
+
+素材筛选: 为了剪辑出几分钟的精彩视频，需要在数十万张几乎相同的“废片”中大海捞针。
+时间成本: 这哪里是艺术创作，分明是一场能耗尽所有热情的体力劳动。
+
+为了更直观地展示这两种思路的差异，我做了一个简单的对比：
+
+  
+      
+          特性
+          “勤奋的笨蛋”模式
+          “聪明的懒汉”模式
+      
+  
+  
+      
+          工作原则
+          无差别、定时记录
+          智能判断、按需记录
+      
+      
+          每时照片数量
+          恒定 1800 张
+          几十到几百张不等，视变化而定
+      
+      
+          存储友好度
+          极低，呈线性爆炸增长
+          极高，只为有效信息付费
+      
+      
+          后期工作量
+          巨大，筛选过程极其痛苦
+          极小，几乎每张都是有效素材
+      
+      
+          最终成果质量
+          包含大量静止、无意义的“垃圾时间”
+          节奏紧凑，聚焦于“变化”的精华
+      
+  
+
+显然，我需要的是后者。一个真正懂得“什么时候该出手，什么时候该摸鱼”的、充满智慧的——聪明的懒汉。
+给摄像头装上“大脑”：懒惰是第一生产力
+于是，我决定对我的摄影系统进行一次彻底的、颠覆性的“智能化”升级。这次，我没有教它如何更努力地工作，恰恰相反，我教给了它一门艺术——如何合理地“偷懒”。
+它的核心工作原理，就像一位经验老道、洞察敏锐的情报官，他从不屑于上报那些“一切正常”的乏味报告，而只在“有情况”时才发出电报。
+为了让它具备这种高级的判断力，我为它设计了三步走的“智慧流程”：
+视觉的纯化：看见本质，而非表象
+清晨的冷光和傍晚的暖光，会给同一场景染上截然不同的色调，但物体本身可能纹丝未动。因此，系统在比较前，会先把彩色画面和存档照片都转换为只有黑白灰的“素描模式”（灰度化）。
+变化的度量：为“不同”赋予权重
+系统将两张黑白照片进行像素级的叠加比对，生成“变化地图”，并计算其中亮色区域占比，得出变化率百分比，用于衡量“发生了什么”。
+决断的艺术：设定一条智慧的“偷懒”基准
+我为它设定了一个阈值，例如 0.5%。低于此值则跳过拍摄，只有当变化显著时才记录，节省资源、聚焦重要。
+生活中的贴心管家：一个高度自律的系统
+为了让它能 7x24 小时稳定运行，我设计了以下几套机制：">
+    <meta name="generator" content="Hugo 0.148.0">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://www.tianhao.me/posts/rk-camera-capture/">
+    
+
+    <meta property="og:url" content="https://www.tianhao.me/posts/rk-camera-capture/">
+  <meta property="og:site_name" content="牙刷刷的小站">
+  <meta property="og:title" content="我的智能小助手：一个会“偷懒”的延时摄影系统">
+  <meta property="og:description" content="生活中那些安静流淌、不易察觉的诗意总是令人充满好奇。迷上了延时摄影因为它能将漫长的时间压缩成迷人的瞬间，让我们得以用肉眼观察到那些缓慢发生的变化，这本身就像一种时间的魔法。
+于是，我翻出了家里那个在抽屉里沉睡了数年的 USB 摄像头，心中涌起一个温柔的念头：我想用它来记录，记录那些被我们匆忙忽略的、生活本身的呼吸。比如阳台上那盆多肉，如何在阳光的亲吻下，用我们看不见的速度悄悄舒展；窗外的云朵，又是如何被无形的手塑造成流动的雕塑；甚至是傍晚时分，夕阳如何在客厅的地板上，一寸寸地拉出长长的、温暖的影子……
+从“勤奋的笨蛋”到“聪明的懒汉”：一次理念的进化 最开始，我的想法和大多数人一样，简单而直接：写一个脚本，让摄像头化身为一个不知疲倦的“劳动模范”，每分钟准时打卡，忠实地拍下一张照片。当我敲下最后一行代码并成功运行的那一刻，心中充满了小小的成就感。然而，这份喜悦在第二天清晨，当我检视成果时，便迅速被一种混杂着困惑与失望的复杂情绪所取代。
+硬盘里，一千四百四十张照片整齐地排列着，它们是我的程序“勤奋”一整天的见证。但我快速滚动预览时，画面却像卡住了一样，静止得令人窒息。尤其是在那漫长的深夜时段，凌晨三点和三点零一分的客厅照片，别说茶几上的灰尘纹丝未动，就连空气本身，似乎都凝固在了那一刻。我忽然意识到，我创造的不是一个记录“变化”的工具，而是一个生产“重复”的工厂。
+当我冷静下来，把这笔“数字遗产”量化后，我才真正理解了问题的严重性：
+惊人的存储消耗： 日产量: 43200 张照片 月产量: 约 1296000 张照片 年产量: 超过 473040000 张照片 按每张照片分辨率 1920*1080 存储，每张照片占用大小 0.2MB 计算，每天将消耗近 8GB 的存储空间，对于家庭存储而言这并不算什么。但是对于嵌入式设备，ESP32 抑或是 RK 的单板机而言有点超出限制。
+毁灭性的后期工作： 素材筛选: 为了剪辑出几分钟的精彩视频，需要在数十万张几乎相同的“废片”中大海捞针。 时间成本: 这哪里是艺术创作，分明是一场能耗尽所有热情的体力劳动。 为了更直观地展示这两种思路的差异，我做了一个简单的对比：
+特性 “勤奋的笨蛋”模式 “聪明的懒汉”模式 工作原则 无差别、定时记录 智能判断、按需记录 每时照片数量 恒定 1800 张 几十到几百张不等，视变化而定 存储友好度 极低，呈线性爆炸增长 极高，只为有效信息付费 后期工作量 巨大，筛选过程极其痛苦 极小，几乎每张都是有效素材 最终成果质量 包含大量静止、无意义的“垃圾时间” 节奏紧凑，聚焦于“变化”的精华 显然，我需要的是后者。一个真正懂得“什么时候该出手，什么时候该摸鱼”的、充满智慧的——聪明的懒汉。
+给摄像头装上“大脑”：懒惰是第一生产力 于是，我决定对我的摄影系统进行一次彻底的、颠覆性的“智能化”升级。这次，我没有教它如何更努力地工作，恰恰相反，我教给了它一门艺术——如何合理地“偷懒”。
+它的核心工作原理，就像一位经验老道、洞察敏锐的情报官，他从不屑于上报那些“一切正常”的乏味报告，而只在“有情况”时才发出电报。
+为了让它具备这种高级的判断力，我为它设计了三步走的“智慧流程”：
+视觉的纯化：看见本质，而非表象 清晨的冷光和傍晚的暖光，会给同一场景染上截然不同的色调，但物体本身可能纹丝未动。因此，系统在比较前，会先把彩色画面和存档照片都转换为只有黑白灰的“素描模式”（灰度化）。
+变化的度量：为“不同”赋予权重 系统将两张黑白照片进行像素级的叠加比对，生成“变化地图”，并计算其中亮色区域占比，得出变化率百分比，用于衡量“发生了什么”。
+决断的艺术：设定一条智慧的“偷懒”基准 我为它设定了一个阈值，例如 0.5%。低于此值则跳过拍摄，只有当变化显著时才记录，节省资源、聚焦重要。
+生活中的贴心管家：一个高度自律的系统 为了让它能 7x24 小时稳定运行，我设计了以下几套机制：">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-12T15:38:51+08:00">
+    <meta property="article:modified_time" content="2025-07-12T15:38:51+08:00">
+
+  <meta itemprop="name" content="我的智能小助手：一个会“偷懒”的延时摄影系统">
+  <meta itemprop="description" content="生活中那些安静流淌、不易察觉的诗意总是令人充满好奇。迷上了延时摄影因为它能将漫长的时间压缩成迷人的瞬间，让我们得以用肉眼观察到那些缓慢发生的变化，这本身就像一种时间的魔法。
+于是，我翻出了家里那个在抽屉里沉睡了数年的 USB 摄像头，心中涌起一个温柔的念头：我想用它来记录，记录那些被我们匆忙忽略的、生活本身的呼吸。比如阳台上那盆多肉，如何在阳光的亲吻下，用我们看不见的速度悄悄舒展；窗外的云朵，又是如何被无形的手塑造成流动的雕塑；甚至是傍晚时分，夕阳如何在客厅的地板上，一寸寸地拉出长长的、温暖的影子……
+从“勤奋的笨蛋”到“聪明的懒汉”：一次理念的进化 最开始，我的想法和大多数人一样，简单而直接：写一个脚本，让摄像头化身为一个不知疲倦的“劳动模范”，每分钟准时打卡，忠实地拍下一张照片。当我敲下最后一行代码并成功运行的那一刻，心中充满了小小的成就感。然而，这份喜悦在第二天清晨，当我检视成果时，便迅速被一种混杂着困惑与失望的复杂情绪所取代。
+硬盘里，一千四百四十张照片整齐地排列着，它们是我的程序“勤奋”一整天的见证。但我快速滚动预览时，画面却像卡住了一样，静止得令人窒息。尤其是在那漫长的深夜时段，凌晨三点和三点零一分的客厅照片，别说茶几上的灰尘纹丝未动，就连空气本身，似乎都凝固在了那一刻。我忽然意识到，我创造的不是一个记录“变化”的工具，而是一个生产“重复”的工厂。
+当我冷静下来，把这笔“数字遗产”量化后，我才真正理解了问题的严重性：
+惊人的存储消耗： 日产量: 43200 张照片 月产量: 约 1296000 张照片 年产量: 超过 473040000 张照片 按每张照片分辨率 1920*1080 存储，每张照片占用大小 0.2MB 计算，每天将消耗近 8GB 的存储空间，对于家庭存储而言这并不算什么。但是对于嵌入式设备，ESP32 抑或是 RK 的单板机而言有点超出限制。
+毁灭性的后期工作： 素材筛选: 为了剪辑出几分钟的精彩视频，需要在数十万张几乎相同的“废片”中大海捞针。 时间成本: 这哪里是艺术创作，分明是一场能耗尽所有热情的体力劳动。 为了更直观地展示这两种思路的差异，我做了一个简单的对比：
+特性 “勤奋的笨蛋”模式 “聪明的懒汉”模式 工作原则 无差别、定时记录 智能判断、按需记录 每时照片数量 恒定 1800 张 几十到几百张不等，视变化而定 存储友好度 极低，呈线性爆炸增长 极高，只为有效信息付费 后期工作量 巨大，筛选过程极其痛苦 极小，几乎每张都是有效素材 最终成果质量 包含大量静止、无意义的“垃圾时间” 节奏紧凑，聚焦于“变化”的精华 显然，我需要的是后者。一个真正懂得“什么时候该出手，什么时候该摸鱼”的、充满智慧的——聪明的懒汉。
+给摄像头装上“大脑”：懒惰是第一生产力 于是，我决定对我的摄影系统进行一次彻底的、颠覆性的“智能化”升级。这次，我没有教它如何更努力地工作，恰恰相反，我教给了它一门艺术——如何合理地“偷懒”。
+它的核心工作原理，就像一位经验老道、洞察敏锐的情报官，他从不屑于上报那些“一切正常”的乏味报告，而只在“有情况”时才发出电报。
+为了让它具备这种高级的判断力，我为它设计了三步走的“智慧流程”：
+视觉的纯化：看见本质，而非表象 清晨的冷光和傍晚的暖光，会给同一场景染上截然不同的色调，但物体本身可能纹丝未动。因此，系统在比较前，会先把彩色画面和存档照片都转换为只有黑白灰的“素描模式”（灰度化）。
+变化的度量：为“不同”赋予权重 系统将两张黑白照片进行像素级的叠加比对，生成“变化地图”，并计算其中亮色区域占比，得出变化率百分比，用于衡量“发生了什么”。
+决断的艺术：设定一条智慧的“偷懒”基准 我为它设定了一个阈值，例如 0.5%。低于此值则跳过拍摄，只有当变化显著时才记录，节省资源、聚焦重要。
+生活中的贴心管家：一个高度自律的系统 为了让它能 7x24 小时稳定运行，我设计了以下几套机制：">
+  <meta itemprop="datePublished" content="2025-07-12T15:38:51+08:00">
+  <meta itemprop="dateModified" content="2025-07-12T15:38:51+08:00">
+  <meta itemprop="wordCount" content="3575">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="我的智能小助手：一个会“偷懒”的延时摄影系统">
+  <meta name="twitter:description" content="生活中那些安静流淌、不易察觉的诗意总是令人充满好奇。迷上了延时摄影因为它能将漫长的时间压缩成迷人的瞬间，让我们得以用肉眼观察到那些缓慢发生的变化，这本身就像一种时间的魔法。
+于是，我翻出了家里那个在抽屉里沉睡了数年的 USB 摄像头，心中涌起一个温柔的念头：我想用它来记录，记录那些被我们匆忙忽略的、生活本身的呼吸。比如阳台上那盆多肉，如何在阳光的亲吻下，用我们看不见的速度悄悄舒展；窗外的云朵，又是如何被无形的手塑造成流动的雕塑；甚至是傍晚时分，夕阳如何在客厅的地板上，一寸寸地拉出长长的、温暖的影子……
+从“勤奋的笨蛋”到“聪明的懒汉”：一次理念的进化 最开始，我的想法和大多数人一样，简单而直接：写一个脚本，让摄像头化身为一个不知疲倦的“劳动模范”，每分钟准时打卡，忠实地拍下一张照片。当我敲下最后一行代码并成功运行的那一刻，心中充满了小小的成就感。然而，这份喜悦在第二天清晨，当我检视成果时，便迅速被一种混杂着困惑与失望的复杂情绪所取代。
+硬盘里，一千四百四十张照片整齐地排列着，它们是我的程序“勤奋”一整天的见证。但我快速滚动预览时，画面却像卡住了一样，静止得令人窒息。尤其是在那漫长的深夜时段，凌晨三点和三点零一分的客厅照片，别说茶几上的灰尘纹丝未动，就连空气本身，似乎都凝固在了那一刻。我忽然意识到，我创造的不是一个记录“变化”的工具，而是一个生产“重复”的工厂。
+当我冷静下来，把这笔“数字遗产”量化后，我才真正理解了问题的严重性：
+惊人的存储消耗： 日产量: 43200 张照片 月产量: 约 1296000 张照片 年产量: 超过 473040000 张照片 按每张照片分辨率 1920*1080 存储，每张照片占用大小 0.2MB 计算，每天将消耗近 8GB 的存储空间，对于家庭存储而言这并不算什么。但是对于嵌入式设备，ESP32 抑或是 RK 的单板机而言有点超出限制。
+毁灭性的后期工作： 素材筛选: 为了剪辑出几分钟的精彩视频，需要在数十万张几乎相同的“废片”中大海捞针。 时间成本: 这哪里是艺术创作，分明是一场能耗尽所有热情的体力劳动。 为了更直观地展示这两种思路的差异，我做了一个简单的对比：
+特性 “勤奋的笨蛋”模式 “聪明的懒汉”模式 工作原则 无差别、定时记录 智能判断、按需记录 每时照片数量 恒定 1800 张 几十到几百张不等，视变化而定 存储友好度 极低，呈线性爆炸增长 极高，只为有效信息付费 后期工作量 巨大，筛选过程极其痛苦 极小，几乎每张都是有效素材 最终成果质量 包含大量静止、无意义的“垃圾时间” 节奏紧凑，聚焦于“变化”的精华 显然，我需要的是后者。一个真正懂得“什么时候该出手，什么时候该摸鱼”的、充满智慧的——聪明的懒汉。
+给摄像头装上“大脑”：懒惰是第一生产力 于是，我决定对我的摄影系统进行一次彻底的、颠覆性的“智能化”升级。这次，我没有教它如何更努力地工作，恰恰相反，我教给了它一门艺术——如何合理地“偷懒”。
+它的核心工作原理，就像一位经验老道、洞察敏锐的情报官，他从不屑于上报那些“一切正常”的乏味报告，而只在“有情况”时才发出电报。
+为了让它具备这种高级的判断力，我为它设计了三步走的“智慧流程”：
+视觉的纯化：看见本质，而非表象 清晨的冷光和傍晚的暖光，会给同一场景染上截然不同的色调，但物体本身可能纹丝未动。因此，系统在比较前，会先把彩色画面和存档照片都转换为只有黑白灰的“素描模式”（灰度化）。
+变化的度量：为“不同”赋予权重 系统将两张黑白照片进行像素级的叠加比对，生成“变化地图”，并计算其中亮色区域占比，得出变化率百分比，用于衡量“发生了什么”。
+决断的艺术：设定一条智慧的“偷懒”基准 我为它设定了一个阈值，例如 0.5%。低于此值则跳过拍摄，只有当变化显著时才记录，节省资源、聚焦重要。
+生活中的贴心管家：一个高度自律的系统 为了让它能 7x24 小时稳定运行，我设计了以下几套机制：">
+
+      
+    
+	
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        牙刷刷的小站
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">我的智能小助手：一个会“偷懒”的延时摄影系统</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2025-07-12T15:38:51+08:00">July 12, 2025</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>生活中那些安静流淌、不易察觉的诗意总是令人充满好奇。迷上了延时摄影因为它能将漫长的时间压缩成迷人的瞬间，让我们得以用肉眼观察到那些缓慢发生的变化，这本身就像一种时间的魔法。</p>
+<p>于是，我翻出了家里那个在抽屉里沉睡了数年的 USB 摄像头，心中涌起一个温柔的念头：我想用它来记录，记录那些被我们匆忙忽略的、生活本身的呼吸。比如阳台上那盆多肉，如何在阳光的亲吻下，用我们看不见的速度悄悄舒展；窗外的云朵，又是如何被无形的手塑造成流动的雕塑；甚至是傍晚时分，夕阳如何在客厅的地板上，一寸寸地拉出长长的、温暖的影子……</p>
+<h2 id="从勤奋的笨蛋到聪明的懒汉一次理念的进化">从“勤奋的笨蛋”到“聪明的懒汉”：一次理念的进化</h2>
+<p>最开始，我的想法和大多数人一样，简单而直接：写一个脚本，让摄像头化身为一个不知疲倦的“劳动模范”，每分钟准时打卡，忠实地拍下一张照片。当我敲下最后一行代码并成功运行的那一刻，心中充满了小小的成就感。然而，这份喜悦在第二天清晨，当我检视成果时，便迅速被一种混杂着困惑与失望的复杂情绪所取代。</p>
+<p>硬盘里，一千四百四十张照片整齐地排列着，它们是我的程序“勤奋”一整天的见证。但我快速滚动预览时，画面却像卡住了一样，静止得令人窒息。尤其是在那漫长的深夜时段，凌晨三点和三点零一分的客厅照片，别说茶几上的灰尘纹丝未动，就连空气本身，似乎都凝固在了那一刻。我忽然意识到，我创造的不是一个记录“变化”的工具，而是一个生产“重复”的工厂。</p>
+<p>当我冷静下来，把这笔“数字遗产”量化后，我才真正理解了问题的严重性：</p>
+<h3 id="惊人的存储消耗">惊人的存储消耗：</h3>
+<ul>
+<li><strong>日产量</strong>: 43200 张照片</li>
+<li><strong>月产量</strong>: 约 1296000 张照片</li>
+<li><strong>年产量</strong>: 超过 473040000 张照片</li>
+</ul>
+<p>按每张照片分辨率 1920*1080 存储，每张照片占用大小 0.2MB 计算，每天将消耗近 8GB 的存储空间，对于家庭存储而言这并不算什么。但是对于嵌入式设备，ESP32 抑或是 RK 的单板机而言有点超出限制。</p>
+<h3 id="毁灭性的后期工作">毁灭性的后期工作：</h3>
+<ul>
+<li><strong>素材筛选</strong>: 为了剪辑出几分钟的精彩视频，需要在数十万张几乎相同的“废片”中大海捞针。</li>
+<li><strong>时间成本</strong>: 这哪里是艺术创作，分明是一场能耗尽所有热情的体力劳动。</li>
+</ul>
+<p>为了更直观地展示这两种思路的差异，我做了一个简单的对比：</p>
+<table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>“勤奋的笨蛋”模式</th>
+          <th>“聪明的懒汉”模式</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>工作原则</strong></td>
+          <td>无差别、定时记录</td>
+          <td>智能判断、按需记录</td>
+      </tr>
+      <tr>
+          <td><strong>每时照片数量</strong></td>
+          <td>恒定 1800 张</td>
+          <td>几十到几百张不等，视变化而定</td>
+      </tr>
+      <tr>
+          <td><strong>存储友好度</strong></td>
+          <td>极低，呈线性爆炸增长</td>
+          <td>极高，只为有效信息付费</td>
+      </tr>
+      <tr>
+          <td><strong>后期工作量</strong></td>
+          <td>巨大，筛选过程极其痛苦</td>
+          <td>极小，几乎每张都是有效素材</td>
+      </tr>
+      <tr>
+          <td><strong>最终成果质量</strong></td>
+          <td>包含大量静止、无意义的“垃圾时间”</td>
+          <td>节奏紧凑，聚焦于“变化”的精华</td>
+      </tr>
+  </tbody>
+</table>
+<p>显然，我需要的是后者。一个真正懂得“什么时候该出手，什么时候该摸鱼”的、充满智慧的——聪明的懒汉。</p>
+<h2 id="给摄像头装上大脑懒惰是第一生产力">给摄像头装上“大脑”：懒惰是第一生产力</h2>
+<p>于是，我决定对我的摄影系统进行一次彻底的、颠覆性的“智能化”升级。这次，我没有教它如何更努力地工作，恰恰相反，我教给了它一门艺术——如何合理地“偷懒”。</p>
+<p>它的核心工作原理，就像一位经验老道、洞察敏锐的情报官，他从不屑于上报那些“一切正常”的乏味报告，而只在“有情况”时才发出电报。</p>
+<p>为了让它具备这种高级的判断力，我为它设计了三步走的“智慧流程”：</p>
+<h3 id="视觉的纯化看见本质而非表象">视觉的纯化：看见本质，而非表象</h3>
+<p>清晨的冷光和傍晚的暖光，会给同一场景染上截然不同的色调，但物体本身可能纹丝未动。因此，系统在比较前，会先把彩色画面和存档照片都转换为只有黑白灰的“素描模式”（灰度化）。</p>
+<h3 id="变化的度量为不同赋予权重">变化的度量：为“不同”赋予权重</h3>
+<p>系统将两张黑白照片进行像素级的叠加比对，生成“变化地图”，并计算其中亮色区域占比，得出变化率百分比，用于衡量“发生了什么”。</p>
+<h3 id="决断的艺术设定一条智慧的偷懒基准">决断的艺术：设定一条智慧的“偷懒”基准</h3>
+<p>我为它设定了一个阈值，例如 0.5%。低于此值则跳过拍摄，只有当变化显著时才记录，节省资源、聚焦重要。</p>
+<h2 id="生活中的贴心管家一个高度自律的系统">生活中的贴心管家：一个高度自律的系统</h2>
+<p>为了让它能 7x24 小时稳定运行，我设计了以下几套机制：</p>
+<h3 id="量身定制的生物钟">量身定制的“生物钟”</h3>
+<p>根据家庭节奏设定不同频率的检测：</p>
+<ul>
+<li><strong>晨光捕捉 (6-8点)</strong>：每 5 秒捕捉一次</li>
+<li><strong>日间活跃 (8-18点)</strong>：每 2 秒捕捉一次</li>
+<li><strong>黄昏慢品 (18-22点)</strong>：每 5 秒捕捉一次</li>
+<li><strong>午夜巡航 (22-6点)</strong>：每 10 秒捕捉一次</li>
+</ul>
+<h3 id="深谋远虑的空间魔法">深谋远虑的“空间魔法”</h3>
+<p>当存储使用接近 85% 时，系统自动删除最旧的存档，确保运行空间始终充足。</p>
+<h3 id="百折不挠的生存本能">百折不挠的“生存本能”</h3>
+<p>面对断电、摄像头失联等异常，系统具备重连重试机制，最大程度自愈保持在线。</p>
+<h2 id="意外的收获成为生活的静谧观察者">意外的收获：成为生活的静谧观察者</h2>
+<p>系统的运行成果，远超预期，它让我发现：</p>
+<h3 id="微缩的家庭日晷">微缩的家庭日晷</h3>
+<p>追踪阳光在家中地板上的路径变化，像一个巨大的光影时钟。</p>
+<h3 id="植物的无声舞蹈">植物的无声舞蹈</h3>
+<p>延时视频中能看见多肉转动身体朝向太阳，充满生命的对话。</p>
+<h3 id="窗外的流动风景">窗外的流动风景</h3>
+<p>记录窗外云卷云舒、雪后屋顶融化的水滴落下，一切如诗如画。</p>
+<h2 id="创造的乐趣在于过程本身">创造的乐趣，在于过程本身</h2>
+<p>从想法萌芽到系统成熟，这个从 0 到 1 的过程带给我的满足感是难以言喻的。</p>
+<p>技术的魅力不在于它多复杂，而在于我们如何运用它去理解和体验生活。</p>
+<p>如果你也对创造充满热情，那就从一个微小的点子开始吧。真正的门槛，从不在工具，而在你那份愿意“折腾”的初心。</p>
+<p><strong>开启你的创造之旅吧，去记录下属于你自己的、独一无二的时光故事。</strong></p>
+<p>项目代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging.handlers
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> signal
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> shutil
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> traceback
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, time <span style="color:#66d9ef">as</span> dt_time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> threading <span style="color:#f92672">import</span> Event
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Script Information ---</span>
+</span></span><span style="display:flex;"><span>SCRIPT_VERSION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2.0.1&#34;</span>
+</span></span><span style="display:flex;"><span>SCRIPT_NAME <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>basename(__file__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Default Configuration ---</span>
+</span></span><span style="display:flex;"><span>BASE_APP_DIR <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/opt/camera/&#34;</span>
+</span></span><span style="display:flex;"><span>LOG_DIR <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(BASE_APP_DIR, <span style="color:#e6db74">&#39;logs&#39;</span>)
+</span></span><span style="display:flex;"><span>PID_FILE_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;/var/run/</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;.py&#39;</span>, <span style="color:#e6db74">&#39;.pid&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>IMAGE_SAVE_BASE_DIR <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/opt/camera/captures&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LOG_LEVEL_CONFIG <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;INFO&#34;</span>
+</span></span><span style="display:flex;"><span>LOG_FILE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;image_capture&#34;</span>
+</span></span><span style="display:flex;"><span>LOG_ROTATE_WHEN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;midnight&#34;</span>
+</span></span><span style="display:flex;"><span>LOG_ROTATE_INTERVAL <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>LOG_ROTATE_BACKUP_COUNT <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DEFAULT_CAMERA_INDEX <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>DEFAULT_CAMERA_DEVICE_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._UGREEN_Camera_2K_SN0001-video-index0&#34;</span>
+</span></span><span style="display:flex;"><span>DEFAULT_WIDTH <span style="color:#f92672">=</span> <span style="color:#ae81ff">1920</span>
+</span></span><span style="display:flex;"><span>DEFAULT_HEIGHT <span style="color:#f92672">=</span> <span style="color:#ae81ff">1080</span>
+</span></span><span style="display:flex;"><span>REQUESTED_FOURCC <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;YUYV&#39;</span>
+</span></span><span style="display:flex;"><span>JPEG_SAVE_QUALITY <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CAPTURE_SCHEDULE_CONFIG <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;end_time_exclusive&#34;</span>: dt_time(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">0</span>), <span style="color:#e6db74">&#34;interval_seconds&#34;</span>: <span style="color:#ae81ff">10</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;end_time_exclusive&#34;</span>: dt_time(<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">0</span>),  <span style="color:#e6db74">&#34;interval_seconds&#34;</span>: <span style="color:#ae81ff">5</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;end_time_exclusive&#34;</span>: dt_time(<span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">30</span>),  <span style="color:#e6db74">&#34;interval_seconds&#34;</span>: <span style="color:#ae81ff">2.5</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#e6db74">&#34;end_time_exclusive&#34;</span>: dt_time(<span style="color:#ae81ff">22</span>, <span style="color:#ae81ff">30</span>),  <span style="color:#e6db74">&#34;interval_seconds&#34;</span>: <span style="color:#ae81ff">5</span>},
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>DEFAULT_INTERVAL_LATE_NIGHT <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PARAMETER_SET_RETRIES <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>PARAMETER_SET_DELAY_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>
+</span></span><span style="display:flex;"><span>CAMERA_INIT_FAILURE_MAX_CONSECUTIVE <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>CAMERA_INIT_RETRY_DELAY_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>CAMERA_INIT_LONG_BACKOFF_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># MODIFICATION v2.0.1: New config for read failures</span>
+</span></span><span style="display:flex;"><span>MAX_CONSECUTIVE_READ_FAILURES <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># Max consecutive cap.read() failures before longer pause</span>
+</span></span><span style="display:flex;"><span>READ_FAILURE_LONG_BACKOFF_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span> <span style="color:#75715e"># Longer pause after max read failures</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FRAME_READ_ERROR_RETRY_DELAY_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span> <span style="color:#75715e"># Short delay after a single read failure</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># MODIFICATION v2.0.1: New config for imwrite failures</span>
+</span></span><span style="display:flex;"><span>MAX_CONSECUTIVE_IMWRITE_FAILURES <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span> <span style="color:#75715e"># Max consecutive cv2.imwrite() failures before shutdown</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ENABLE_TIMESTAMP <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>TIMESTAMP_FORMAT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;%Y/%m/</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IMAGE_STORAGE_MONITOR_PATH <span style="color:#f92672">=</span> IMAGE_SAVE_BASE_DIR
+</span></span><span style="display:flex;"><span>IMAGE_STORAGE_MAX_USAGE_PERCENT <span style="color:#f92672">=</span> <span style="color:#ae81ff">85</span>
+</span></span><span style="display:flex;"><span>IMAGE_STORAGE_CLEANUP_BATCH_DAYS <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>DISK_CHECK_INTERVAL_SECONDS <span style="color:#f92672">=</span> <span style="color:#ae81ff">14400</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Global Variables ---</span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>shutdown_event <span style="color:#f92672">=</span> Event()
+</span></span><span style="display:flex;"><span>consecutive_imwrite_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>consecutive_read_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>    <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 默认的轮廓比较参数 (可以根据您的实际测试调整这些值)</span>
+</span></span><span style="display:flex;"><span>DEFAULT_CONTOUR_PIXEL_THRESHOLD <span style="color:#f92672">=</span> <span style="color:#ae81ff">25</span>   <span style="color:#75715e"># 用于生成初始差异图的像素强度阈值</span>
+</span></span><span style="display:flex;"><span>DEFAULT_CONTOUR_KERNEL_SIZE <span style="color:#f92672">=</span> (<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>)   <span style="color:#75715e"># 形态学膨胀操作的卷积核大小</span>
+</span></span><span style="display:flex;"><span>DEFAULT_CONTOUR_DILATION_ITERATIONS <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 膨胀操作的迭代次数</span>
+</span></span><span style="display:flex;"><span>DEFAULT_CONTOUR_MIN_AREA_FILTER <span style="color:#f92672">=</span> <span style="color:#ae81ff">50.0</span> <span style="color:#75715e"># 过滤掉小于此面积的差异轮廓</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>last_significant_frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>SIMILARITY_THRESHOLD_PERCENT_INT <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span> <span style="color:#75715e"># 例如0.5%</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Logging Setup ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (setup_logging_system function from v2.0.0 is unchanged)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setup_logging_system</span>(log_dir, log_file_prefix, level_str, when, interval, backup_count):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> logger
+</span></span><span style="display:flex;"><span>    numeric_level <span style="color:#f92672">=</span> getattr(logging, level_str<span style="color:#f92672">.</span>upper(), logging<span style="color:#f92672">.</span>INFO)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(log_dir):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>makedirs(log_dir, exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;CRITICAL: Failed to create log directory </span><span style="color:#e6db74">{</span>log_dir<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(SCRIPT_NAME)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>setLevel(numeric_level)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## current_date_str = datetime.now().strftime(&#34;_%Y_%m_%d&#34;) # 例如：_2023_10_27</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## current_date_str_new = datetime.now().strftime(&#34;%Y-%m-%d&#34;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## actual_log_file_name = f&#34;{log_file_prefix}.log.{current_date_str_new}&#34;</span>
+</span></span><span style="display:flex;"><span>    log_file_basename <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>log_file_prefix<span style="color:#e6db74">}</span><span style="color:#e6db74">.log&#34;</span> <span style="color:#75715e"># 例如 &#34;image_capture.log&#34;</span>
+</span></span><span style="display:flex;"><span>    log_filepath <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(log_dir, log_file_basename) <span style="color:#75715e"># 使用这个路径</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> logger<span style="color:#f92672">.</span>hasHandlers():
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>handlers<span style="color:#f92672">.</span>clear()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    formatter <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>Formatter(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%(asctime)s</span><span style="color:#e6db74"> [</span><span style="color:#e6db74">%(levelname)-7s</span><span style="color:#e6db74">] [</span><span style="color:#e6db74">%(name)s</span><span style="color:#e6db74">:</span><span style="color:#e6db74">%(funcName)s</span><span style="color:#e6db74">:</span><span style="color:#e6db74">%(lineno)d</span><span style="color:#e6db74">] </span><span style="color:#e6db74">%(message)s</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## log_filepath = os.path.join(log_dir, actual_log_file_name)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        fh <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>handlers<span style="color:#f92672">.</span>TimedRotatingFileHandler(
+</span></span><span style="display:flex;"><span>            log_filepath, when<span style="color:#f92672">=</span>when, interval<span style="color:#f92672">=</span>interval, backupCount<span style="color:#f92672">=</span>backup_count, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf-8&#39;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        fh<span style="color:#f92672">.</span>setLevel(numeric_level)
+</span></span><span style="display:flex;"><span>        fh<span style="color:#f92672">.</span>setFormatter(formatter)
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>addHandler(fh)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;WARNING: Failed to initialize file logger at </span><span style="color:#e6db74">{</span>log_filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ch <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>StreamHandler(sys<span style="color:#f92672">.</span>stdout) 
+</span></span><span style="display:flex;"><span>    ch<span style="color:#f92672">.</span>setLevel(numeric_level) 
+</span></span><span style="display:flex;"><span>    ch<span style="color:#f92672">.</span>setFormatter(formatter)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>addHandler(ch)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Logging initialized. Level: </span><span style="color:#e6db74">{</span>level_str<span style="color:#e6db74">}</span><span style="color:#e6db74">. File: </span><span style="color:#e6db74">{</span>log_filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> logger
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- PID File Management ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (create_pid_file, remove_pid_file functions from v2.0.0 are unchanged)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_pid_file</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> PID_FILE_PATH: <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        pid <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getpid()
+</span></span><span style="display:flex;"><span>        os<span style="color:#f92672">.</span>makedirs(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>dirname(PID_FILE_PATH), exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> open(PID_FILE_PATH, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>            f<span style="color:#f92672">.</span>write(str(pid))
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;PID file created at </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> with PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">IOError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unable to create PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">remove_pid_file</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> PID_FILE_PATH: <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>remove(PID_FILE_PATH)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> removed.&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">IOError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unable to remove PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Signal Handling ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">signal_term_handler</span>(signum, frame):
+</span></span><span style="display:flex;"><span>    msg <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;接收到信号 </span><span style="color:#e6db74">{</span>signal<span style="color:#f92672">.</span>Signals(signum)<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{</span>signum<span style="color:#e6db74">}</span><span style="color:#e6db74">)，开始优雅停机...&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> logger: logger<span style="color:#f92672">.</span>info(msg)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>: print(msg, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>    shutdown_event<span style="color:#f92672">.</span>set()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Core Camera and Image Processing Functions ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (get_fourcc_str, set_camera_parameter, initialize_camera, add_timestamp_to_frame</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  from v2.0.0 are good, ensure logger is used, and set_camera_parameter uses shutdown_event.wait)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_fourcc_str</span>(fourcc_int: int) <span style="color:#f92672">-&gt;</span> str: <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> fourcc_int <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;N/A (0)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([chr((fourcc_int <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">*</span> i) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xFF</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>)])<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;转换FOURCC整数 </span><span style="color:#e6db74">{</span>hex(fourcc_int)<span style="color:#e6db74">}</span><span style="color:#e6db74"> 到字符串失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unknown (</span><span style="color:#e6db74">{</span>hex(fourcc_int)<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_camera_parameter</span>(cap: cv2<span style="color:#f92672">.</span>VideoCapture, prop_id: int, value, param_name: str, 
+</span></span><span style="display:flex;"><span>                         retries: int <span style="color:#f92672">=</span> PARAMETER_SET_RETRIES, delay: float <span style="color:#f92672">=</span> PARAMETER_SET_DELAY_SECONDS) <span style="color:#f92672">-&gt;</span> bool: <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试设置摄像头参数 </span><span style="color:#e6db74">{</span>param_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> 为 </span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(retries):
+</span></span><span style="display:flex;"><span>        cap<span style="color:#f92672">.</span>set(prop_id, value)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>wait(timeout<span style="color:#f92672">=</span>delay): <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e"># Shutdown requested</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        actual_value <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>get(prop_id)
+</span></span><span style="display:flex;"><span>        is_set <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        requested_value_for_log <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>        actual_value_for_log <span style="color:#f92672">=</span> actual_value
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> prop_id <span style="color:#f92672">==</span> cv2<span style="color:#f92672">.</span>CAP_PROP_FOURCC:
+</span></span><span style="display:flex;"><span>            target_int <span style="color:#f92672">=</span> int(value) 
+</span></span><span style="display:flex;"><span>            actual_int <span style="color:#f92672">=</span> int(actual_value)
+</span></span><span style="display:flex;"><span>            is_set <span style="color:#f92672">=</span> (actual_int <span style="color:#f92672">==</span> target_int)
+</span></span><span style="display:flex;"><span>            requested_value_for_log <span style="color:#f92672">=</span> get_fourcc_str(target_int)
+</span></span><span style="display:flex;"><span>            actual_value_for_log <span style="color:#f92672">=</span> get_fourcc_str(actual_int)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> isinstance(value, float):
+</span></span><span style="display:flex;"><span>            is_set <span style="color:#f92672">=</span> (abs(float(actual_value) <span style="color:#f92672">-</span> value) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1e-9</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>: 
+</span></span><span style="display:flex;"><span>            is_set <span style="color:#f92672">=</span> (int(actual_value) <span style="color:#f92672">==</span> int(value))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试 </span><span style="color:#e6db74">{</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{</span>retries<span style="color:#e6db74">}</span><span style="color:#e6db74"> 设置 </span><span style="color:#e6db74">{</span>param_name<span style="color:#e6db74">}</span><span style="color:#e6db74">: 请求 </span><span style="color:#e6db74">{</span>requested_value_for_log<span style="color:#e6db74">}</span><span style="color:#e6db74">, 实际 </span><span style="color:#e6db74">{</span>actual_value_for_log<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_set:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;参数 </span><span style="color:#e6db74">{</span>param_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> 成功设置为 </span><span style="color:#e6db74">{</span>requested_value_for_log<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.1</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>    final_actual_value <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>get(prop_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> prop_id <span style="color:#f92672">==</span> cv2<span style="color:#f92672">.</span>CAP_PROP_FOURCC: final_actual_value <span style="color:#f92672">=</span> get_fourcc_str(int(final_actual_value))
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;无法将参数 </span><span style="color:#e6db74">{</span>param_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> 设置为 </span><span style="color:#e6db74">{</span>requested_value_for_log<span style="color:#e6db74">}</span><span style="color:#e6db74"> &#34;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;经过 </span><span style="color:#e6db74">{</span>retries<span style="color:#e6db74">}</span><span style="color:#e6db74"> 次尝试后，实际值为 </span><span style="color:#e6db74">{</span>final_actual_value<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">initialize_camera</span>(camera_path: str, width: int, height: int, req_fourcc_str: str): <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试打开并初始化设备 </span><span style="color:#e6db74">{</span>camera_path<span style="color:#e6db74">}</span><span style="color:#e6db74"> (使用 V4L2 后端)&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    device_path <span style="color:#f92672">=</span> camera_path
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(device_path):
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;摄像头设备节点 </span><span style="color:#e6db74">{</span>device_path<span style="color:#e6db74">}</span><span style="color:#e6db74"> 不存在。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#34;NODE_NOT_FOUND&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    cap <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoCapture(camera_path, cv2<span style="color:#f92672">.</span>CAP_V4L2)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;无法打开摄像头 </span><span style="color:#e6db74">{</span>camera_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#34;OPEN_FAILED&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    effective_fourcc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NOT_SET&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> req_fourcc_str:
+</span></span><span style="display:flex;"><span>        target_fourcc_int <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>VideoWriter_fourcc(<span style="color:#f92672">*</span>req_fourcc_str)
+</span></span><span style="display:flex;"><span>        set_camera_parameter(cap, cv2<span style="color:#f92672">.</span>CAP_PROP_FOURCC, target_fourcc_int, <span style="color:#e6db74">&#34;FOURCC&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    set_camera_parameter(cap, cv2<span style="color:#f92672">.</span>CAP_PROP_FPS, <span style="color:#ae81ff">10</span>, <span style="color:#e6db74">&#34;FPS&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): cap<span style="color:#f92672">.</span>release(); <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#34;SHUTDOWN_DURING_INIT&#34;</span>
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.1</span>) 
+</span></span><span style="display:flex;"><span>    current_fourcc_int <span style="color:#f92672">=</span> int(cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FOURCC))
+</span></span><span style="display:flex;"><span>    effective_fourcc <span style="color:#f92672">=</span> get_fourcc_str(current_fourcc_int)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> req_fourcc_str <span style="color:#f92672">and</span> effective_fourcc<span style="color:#f92672">.</span>upper() <span style="color:#f92672">!=</span> req_fourcc_str<span style="color:#f92672">.</span>upper():
+</span></span><span style="display:flex;"><span>         logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;请求的FOURCC </span><span style="color:#e6db74">{</span>req_fourcc_str<span style="color:#e6db74">}</span><span style="color:#e6db74"> 未能精确设置，摄像头实际为 </span><span style="color:#e6db74">{</span>effective_fourcc<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    set_camera_parameter(cap, cv2<span style="color:#f92672">.</span>CAP_PROP_FRAME_WIDTH, width, <span style="color:#e6db74">&#34;Width&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): cap<span style="color:#f92672">.</span>release(); <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#34;SHUTDOWN_DURING_INIT&#34;</span>
+</span></span><span style="display:flex;"><span>    set_camera_parameter(cap, cv2<span style="color:#f92672">.</span>CAP_PROP_FRAME_HEIGHT, height, <span style="color:#e6db74">&#34;Height&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): cap<span style="color:#f92672">.</span>release(); <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, <span style="color:#e6db74">&#34;SHUTDOWN_DURING_INIT&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.2</span>) 
+</span></span><span style="display:flex;"><span>    actual_width <span style="color:#f92672">=</span> int(cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FRAME_WIDTH))
+</span></span><span style="display:flex;"><span>    actual_height <span style="color:#f92672">=</span> int(cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FRAME_HEIGHT))
+</span></span><span style="display:flex;"><span>    actual_fps_val <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FPS) 
+</span></span><span style="display:flex;"><span>    current_fourcc_int <span style="color:#f92672">=</span> int(cap<span style="color:#f92672">.</span>get(cv2<span style="color:#f92672">.</span>CAP_PROP_FOURCC)) 
+</span></span><span style="display:flex;"><span>    effective_fourcc <span style="color:#f92672">=</span> get_fourcc_str(current_fourcc_int)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;摄像头 </span><span style="color:#e6db74">{</span>camera_path<span style="color:#e6db74">}</span><span style="color:#e6db74"> 初始化完成。&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  请求参数 -&gt; FOURCC: </span><span style="color:#e6db74">{</span>req_fourcc_str <span style="color:#66d9ef">if</span> req_fourcc_str <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;N/A&#39;</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, 尺寸: </span><span style="color:#e6db74">{</span>width<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>height<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  实际参数 -&gt; FOURCC: </span><span style="color:#e6db74">{</span>effective_fourcc<span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{</span>hex(current_fourcc_int)<span style="color:#e6db74">}</span><span style="color:#e6db74">), &#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尺寸: </span><span style="color:#e6db74">{</span>actual_width<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>actual_height<span style="color:#e6db74">}</span><span style="color:#e6db74">, &#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;报告FPS: </span><span style="color:#e6db74">{</span>actual_fps_val<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> actual_width <span style="color:#f92672">!=</span> width <span style="color:#f92672">or</span> actual_height <span style="color:#f92672">!=</span> height:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;摄像头实际分辨率 </span><span style="color:#e6db74">{</span>actual_width<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>actual_height<span style="color:#e6db74">}</span><span style="color:#e6db74"> 与请求的 </span><span style="color:#e6db74">{</span>width<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>height<span style="color:#e6db74">}</span><span style="color:#e6db74"> 不符！&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> cap, effective_fourcc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_timestamp_to_frame</span>(frame_to_modify, timestamp_format_str): <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ENABLE_TIMESTAMP:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> frame_to_modify
+</span></span><span style="display:flex;"><span>    timestamp_text <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>strftime(timestamp_format_str)
+</span></span><span style="display:flex;"><span>    font <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>FONT_HERSHEY_SIMPLEX
+</span></span><span style="display:flex;"><span>    img_h, img_w <span style="color:#f92672">=</span> frame_to_modify<span style="color:#f92672">.</span>shape[:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>    font_scale <span style="color:#f92672">=</span> (img_h <span style="color:#f92672">/</span> <span style="color:#ae81ff">1080.0</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> font_scale <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span>: font_scale <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>
+</span></span><span style="display:flex;"><span>    thickness <span style="color:#f92672">=</span> max(<span style="color:#ae81ff">1</span>, int(font_scale <span style="color:#f92672">*</span> <span style="color:#ae81ff">2.0</span>)) 
+</span></span><span style="display:flex;"><span>    margin <span style="color:#f92672">=</span> max(<span style="color:#ae81ff">10</span>, int(img_h <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.05</span>)) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    text_size, baseline <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>getTextSize(timestamp_text, font, font_scale, thickness)
+</span></span><span style="display:flex;"><span>    text_width, text_height <span style="color:#f92672">=</span> text_size
+</span></span><span style="display:flex;"><span>    org_x <span style="color:#f92672">=</span> img_w <span style="color:#f92672">-</span> text_width <span style="color:#f92672">-</span> margin
+</span></span><span style="display:flex;"><span>    org_y <span style="color:#f92672">=</span> img_h <span style="color:#f92672">-</span> margin 
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    cv2<span style="color:#f92672">.</span>putText(frame_to_modify, timestamp_text, (org_x, org_y), font, font_scale, 
+</span></span><span style="display:flex;"><span>                (<span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">255</span>), thickness, cv2<span style="color:#f92672">.</span>LINE_AA, bottomLeftOrigin<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> frame_to_modify
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">are_frames_similar</span>(frame1: np<span style="color:#f92672">.</span>ndarray <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>                       frame2: np<span style="color:#f92672">.</span>ndarray <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>                       similarity_diff_rate_threshold_int: int) <span style="color:#f92672">-&gt;</span> bool:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    比较两个帧的相似度，基于轮廓面积差异率。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    帧的顺序无关。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    参数:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        frame1: 第一个帧 (NumPy array) 或 None。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        frame2: 第二个帧 (NumPy array) 或 None。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        similarity_diff_rate_threshold_int (int): 相似度百分比阈值。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            这是一个整数，例如 50 代表差异率上限为 0.50%。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            如果实际差异率 &lt;= 此阈值对应的百分比，则认为帧相似。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    返回:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        bool:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            - 如果任一帧无法解析为有效图像 (例如 None 或类型不对)，返回 False (不相似/无法比较)。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            - 如果轮廓面积差异率 &lt;= (similarity_diff_rate_threshold_int / 100.0)%，返回 True (相似/变化小)。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            - 否则 (差异率较大)，返回 False (不相似/变化大)。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. 检查输入帧的有效性</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># cap.read() 返回的 ret, frame。如果 ret 是 False，frame可能是 None 或无效数据</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> isinstance(frame1, np<span style="color:#f92672">.</span>ndarray) <span style="color:#f92672">or</span> frame1<span style="color:#f92672">.</span>size <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">&#34;are_frames_similar: frame1 无效 (非 NumPy 数组、None 或空数组)。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> isinstance(frame2, np<span style="color:#f92672">.</span>ndarray) <span style="color:#f92672">or</span> frame2<span style="color:#f92672">.</span>size <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">&#34;are_frames_similar: frame2 无效 (非 NumPy 数组、None 或空数组)。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. 确保图像尺寸相同 (将 frame2 调整为 frame1 的尺寸)</span>
+</span></span><span style="display:flex;"><span>    h1, w1 <span style="color:#f92672">=</span> frame1<span style="color:#f92672">.</span>shape[:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>    h2, w2 <span style="color:#f92672">=</span> frame2<span style="color:#f92672">.</span>shape[:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>    frame2_resized <span style="color:#f92672">=</span> frame2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (h1, w1) <span style="color:#f92672">!=</span> (h2, w2):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: 帧尺寸不同。将 frame2 从 (</span><span style="color:#e6db74">{</span>w2<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>h2<span style="color:#e6db74">}</span><span style="color:#e6db74">) 调整为 (</span><span style="color:#e6db74">{</span>w1<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>h1<span style="color:#e6db74">}</span><span style="color:#e6db74">)。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            frame2_resized <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>resize(frame2, (w1, h1), interpolation<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>INTER_AREA)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> cv2<span style="color:#f92672">.</span>error <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: 调整 frame2 尺寸失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e"># 调整尺寸失败，无法比较</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. 转换为灰度图进行比较</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    确保处理单通道和三通道输入，最终得到单通道灰度图</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> frame1<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> frame1<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>: <span style="color:#75715e"># BGR</span>
+</span></span><span style="display:flex;"><span>            gray1 <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(frame1, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> frame1<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: <span style="color:#75715e"># Already grayscale</span>
+</span></span><span style="display:flex;"><span>            gray1 <span style="color:#f92672">=</span> frame1
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: frame1 格式未知 (shape: </span><span style="color:#e6db74">{</span>frame1<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">)。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> frame2_resized<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> frame2_resized<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>: <span style="color:#75715e"># BGR</span>
+</span></span><span style="display:flex;"><span>            gray2 <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(frame2_resized, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> frame2_resized<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: <span style="color:#75715e"># Already grayscale</span>
+</span></span><span style="display:flex;"><span>            gray2 <span style="color:#f92672">=</span> frame2_resized
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: frame2_resized 格式未知 (shape: </span><span style="color:#e6db74">{</span>frame2_resized<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">)。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> cv2<span style="color:#f92672">.</span>error <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: 转换为灰度图失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4. 计算轮廓面积差异率</span>
+</span></span><span style="display:flex;"><span>    image_total_pixels <span style="color:#f92672">=</span> gray1<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> gray1<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> image_total_pixels <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">&#34;are_frames_similar: 图像总像素为0。返回 False。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    abs_diff_img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>absdiff(gray1, gray2)
+</span></span><span style="display:flex;"><span>    _, thresh_img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>threshold(abs_diff_img,
+</span></span><span style="display:flex;"><span>                                  DEFAULT_CONTOUR_PIXEL_THRESHOLD,
+</span></span><span style="display:flex;"><span>                                  <span style="color:#ae81ff">255</span>,
+</span></span><span style="display:flex;"><span>                                  cv2<span style="color:#f92672">.</span>THRESH_BINARY)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    kernel <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(DEFAULT_CONTOUR_KERNEL_SIZE, np<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>    dilated_thresh_img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>dilate(thresh_img,
+</span></span><span style="display:flex;"><span>                                    kernel,
+</span></span><span style="display:flex;"><span>                                    iterations<span style="color:#f92672">=</span>DEFAULT_CONTOUR_DILATION_ITERATIONS)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    contours, _ <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>findContours(dilated_thresh_img,
+</span></span><span style="display:flex;"><span>                                   cv2<span style="color:#f92672">.</span>RETR_EXTERNAL,
+</span></span><span style="display:flex;"><span>                                   cv2<span style="color:#f92672">.</span>CHAIN_APPROX_SIMPLE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    total_significant_contour_area <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> contour <span style="color:#f92672">in</span> contours:
+</span></span><span style="display:flex;"><span>        current_contour_area <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>contourArea(contour)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> current_contour_area <span style="color:#f92672">&gt;</span> DEFAULT_CONTOUR_MIN_AREA_FILTER:
+</span></span><span style="display:flex;"><span>            total_significant_contour_area <span style="color:#f92672">+=</span> current_contour_area
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    contour_area_actual_diff_rate_percent <span style="color:#f92672">=</span> (total_significant_contour_area <span style="color:#f92672">/</span> image_total_pixels) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 5. 根据阈值判断是否相似</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 将传入的整数阈值转换为实际百分比上限</span>
+</span></span><span style="display:flex;"><span>    similarity_threshold_as_percentage <span style="color:#f92672">=</span> similarity_diff_rate_threshold_int <span style="color:#f92672">/</span> <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;are_frames_similar: 实际轮廓差异率: </span><span style="color:#e6db74">{</span>contour_area_actual_diff_rate_percent<span style="color:#e6db74">:</span><span style="color:#e6db74">.4f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%, &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;设定的相似度差异上限: </span><span style="color:#e6db74">{</span>similarity_threshold_as_percentage<span style="color:#e6db74">:</span><span style="color:#e6db74">.4f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">% &#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;(传入整数: </span><span style="color:#e6db74">{</span>similarity_diff_rate_threshold_int<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> contour_area_actual_diff_rate_percent <span style="color:#f92672">&lt;=</span> similarity_threshold_as_percentage:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 差异小或等于阈值，认为相似 (变化小)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># logger.info(f&#34;are_frames_similar: 差异率达标{contour_area_actual_diff_rate_percent:.4f}%，判定为相似 (True)。&#34;)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 差异大，认为不相似 (变化大)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># logger.info(f&#34;are_frames_similar: 差异率超标{contour_area_actual_diff_rate_percent:.4f}%，判定为不相似 (False)。&#34;)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_and_save_frame</span>(frame_data, effective_fourcc, base_save_dir, jpeg_quality_val, ts_format): <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> consecutive_imwrite_failures <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> last_significant_frame
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> frame_data <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;接收到空帧，无法处理。&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;接收到帧。原始 - 尺寸: </span><span style="color:#e6db74">{</span>frame_data<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">, dtype: </span><span style="color:#e6db74">{</span>frame_data<span style="color:#f92672">.</span>dtype<span style="color:#e6db74">}</span><span style="color:#e6db74">, FOURCC上下文: </span><span style="color:#e6db74">{</span>effective_fourcc<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    processed_frame <span style="color:#f92672">=</span> frame_data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># try:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    target_size = (1920, 1080)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    if frame_data.shape[1] != target_size[0] or frame_data.shape[0] != target_size[1]:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#        processed_frame = cv2.resize(frame_data, target_size, interpolation=cv2.INTER_LANCZOS4)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#        logger.info(f&#34;图像缩放完成（高精度），目标尺寸: {target_size}&#34;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#except Exception as e:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    logger.error(f&#34;图像缩放失败: {e}&#34;, exc_info=True)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> effective_fourcc<span style="color:#f92672">.</span>upper() <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;YUYV&#39;</span>, <span style="color:#e6db74">&#39;YUY2&#39;</span>] <span style="color:#f92672">and</span> \
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">not</span> (processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> processed_frame<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>):
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;帧的FOURCC上下文为 </span><span style="color:#e6db74">{</span>effective_fourcc<span style="color:#e6db74">}</span><span style="color:#e6db74"> 且非BGR，尝试YUV-&gt;BGR转换。帧Shape: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> processed_frame<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> DEFAULT_WIDTH <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">and</span> processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: 
+</span></span><span style="display:flex;"><span>                 processed_frame <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(processed_frame, cv2<span style="color:#f92672">.</span>COLOR_YUV2BGR_YUYV) 
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> processed_frame<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: 
+</span></span><span style="display:flex;"><span>                 processed_frame <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(processed_frame, cv2<span style="color:#f92672">.</span>COLOR_YUV2BGR_YUYV)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;未知的YUYV帧结构: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">，无法自动转换。&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> processed_frame<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
+</span></span><span style="display:flex;"><span>                 logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;YUV 转换为 BGR 成功. 新图像尺寸: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>: 
+</span></span><span style="display:flex;"><span>                 logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;YUV 转换为 BGR 后尺寸/通道数不正确: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">. 保留原始帧。&#34;</span>)
+</span></span><span style="display:flex;"><span>                 processed_frame <span style="color:#f92672">=</span> frame_data 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> cv2<span style="color:#f92672">.</span>error <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;YUV 转换为 BGR 失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">. 将使用原始帧。&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            processed_frame <span style="color:#f92672">=</span> frame_data
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: 
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;图像是单通道灰度图 (shape: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">)，转换为BGR。&#34;</span>)
+</span></span><span style="display:flex;"><span>        processed_frame <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(processed_frame, cv2<span style="color:#f92672">.</span>COLOR_GRAY2BGR)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#f92672">not</span> (processed_frame<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">and</span> processed_frame<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>):
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;图像格式未知或非预期 (shape: </span><span style="color:#e6db74">{</span>processed_frame<span style="color:#f92672">.</span>shape<span style="color:#e6db74">}</span><span style="color:#e6db74">). 尝试直接处理。&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 判断是否接近，如果和上一次成功保存类似则直接跳过</span>
+</span></span><span style="display:flex;"><span>    frames_are_indeed_similar <span style="color:#f92672">=</span> are_frames_similar(
+</span></span><span style="display:flex;"><span>        last_significant_frame,
+</span></span><span style="display:flex;"><span>        processed_frame,
+</span></span><span style="display:flex;"><span>        SIMILARITY_THRESHOLD_PERCENT_INT
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> frames_are_indeed_similar:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#if logger: # logger.info(f&#34;当前帧与上一显著帧相似 (差异 &lt;= {SIMILARITY_THRESHOLD_PERCENT_INT/100.0:.2f}%)，不保存。&#34;)</span>
+</span></span><span style="display:flex;"><span>        perform_save_this_frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;SIMILARITY&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># if logger: logger.info(f&#34;当前帧与上一显著帧不相似 (差异 &gt; {SIMILARITY_THRESHOLD_PERCENT_INT/100.0:.2f}%)，将保存。&#34;)</span>
+</span></span><span style="display:flex;"><span>        perform_save_this_frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        last_significant_frame <span style="color:#f92672">=</span> processed_frame
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        frame_with_timestamp <span style="color:#f92672">=</span> add_timestamp_to_frame(processed_frame<span style="color:#f92672">.</span>copy(), ts_format)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;添加时间戳失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">. 将保存不带时间戳的图像。&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        frame_with_timestamp <span style="color:#f92672">=</span> processed_frame
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now()
+</span></span><span style="display:flex;"><span>    save_subdir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(base_save_dir, now<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%Y-%m&#34;</span>), now<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#34;</span>))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        os<span style="color:#f92672">.</span>makedirs(save_subdir, exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;创建目录 </span><span style="color:#e6db74">{</span>save_subdir<span style="color:#e6db74">}</span><span style="color:#e6db74"> 失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">. 无法保存图像。&#34;</span>)
+</span></span><span style="display:flex;"><span>        consecutive_imwrite_failures <span style="color:#f92672">+=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#time_str = now.strftime(&#34;%H%M%S_%f&#34;) </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#filename = f&#34;{time_str}.jpg&#34; </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#filepath = os.path.join(save_subdir, filename)</span>
+</span></span><span style="display:flex;"><span>    file_timestamp <span style="color:#f92672">=</span> now<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%Y%m</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">_%H%M%S_</span><span style="color:#e6db74">%f</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    filename <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;capture_</span><span style="color:#e6db74">{</span>file_timestamp<span style="color:#e6db74">}</span><span style="color:#e6db74">.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>    filepath <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(save_subdir, filename) <span style="color:#75715e"># 保存到年月子目录中</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试将图像保存到: </span><span style="color:#e6db74">{</span>filepath<span style="color:#e6db74">}</span><span style="color:#e6db74"> (质量: </span><span style="color:#e6db74">{</span>jpeg_quality_val<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        save_success <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imwrite(filepath, frame_with_timestamp, [cv2<span style="color:#f92672">.</span>IMWRITE_JPEG_QUALITY, jpeg_quality_val])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> save_success:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;图像成功保存为JPEG: </span><span style="color:#e6db74">{</span>filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            consecutive_imwrite_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># MODIFICATION v2.0.1: Reset on success</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                os<span style="color:#f92672">.</span>chmod(filepath, <span style="color:#ae81ff">0o644</span>) 
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;文件权限设置为 644: </span><span style="color:#e6db74">{</span>filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;设置文件 </span><span style="color:#e6db74">{</span>filepath<span style="color:#e6db74">}</span><span style="color:#e6db74"> 权限失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> filepath
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;cv2.imwrite 保存JPEG图像失败 (返回False): </span><span style="color:#e6db74">{</span>filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            consecutive_imwrite_failures <span style="color:#f92672">+=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;cv2.imwrite 保存图像时发生异常: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        consecutive_imwrite_failures <span style="color:#f92672">+=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Disk Space Management ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_oldest_day_dir</span>(base_dir: str) <span style="color:#f92672">-&gt;</span> str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>: <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    all_day_paths <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isdir(base_dir):
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;get_oldest_day_dir: Base directory &#39;</span><span style="color:#e6db74">{</span>base_dir<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; not found or not a directory.&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ym_dir_name <span style="color:#f92672">in</span> sorted(os<span style="color:#f92672">.</span>listdir(base_dir)):
+</span></span><span style="display:flex;"><span>        ym_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(base_dir, ym_dir_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isdir(ym_path) <span style="color:#f92672">and</span> len(ym_dir_name) <span style="color:#f92672">==</span> <span style="color:#ae81ff">7</span> <span style="color:#f92672">and</span> ym_dir_name[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span>: <span style="color:#75715e"># Valid YYYY-MM</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> d_dir_name <span style="color:#f92672">in</span> sorted(os<span style="color:#f92672">.</span>listdir(ym_path)):
+</span></span><span style="display:flex;"><span>                d_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(ym_path, d_dir_name)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isdir(d_path) <span style="color:#f92672">and</span> len(d_dir_name) <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>: <span style="color:#75715e"># Valid DD</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">try</span>: <span style="color:#75715e"># Ensure DD is integer, further validating format</span>
+</span></span><span style="display:flex;"><span>                        int(d_dir_name) 
+</span></span><span style="display:flex;"><span>                        all_day_paths<span style="color:#f92672">.</span>append(d_path)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
+</span></span><span style="display:flex;"><span>                        logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Skipping non-day directory: </span><span style="color:#e6db74">{</span>d_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> all_day_paths:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> all_day_paths[<span style="color:#ae81ff">0</span>] <span style="color:#75715e"># Lexicographical sort of YYYY-MM/DD is chronological</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_and_manage_disk_space</span>(): <span style="color:#75715e"># Identical to v2.0.0 logic</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        usage <span style="color:#f92672">=</span> shutil<span style="color:#f92672">.</span>disk_usage(IMAGE_STORAGE_MONITOR_PATH)
+</span></span><span style="display:flex;"><span>        percent_used <span style="color:#f92672">=</span> (usage<span style="color:#f92672">.</span>used <span style="color:#f92672">/</span> usage<span style="color:#f92672">.</span>total) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;磁盘空间监控: </span><span style="color:#e6db74">{</span>IMAGE_STORAGE_MONITOR_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Total: </span><span style="color:#e6db74">{</span>usage<span style="color:#f92672">.</span>total <span style="color:#f92672">//</span> (<span style="color:#ae81ff">1024</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">GB, &#34;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Used: </span><span style="color:#e6db74">{</span>usage<span style="color:#f92672">.</span>used <span style="color:#f92672">//</span> (<span style="color:#ae81ff">1024</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">GB (</span><span style="color:#e6db74">{</span>percent_used<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%), &#34;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Free: </span><span style="color:#e6db74">{</span>usage<span style="color:#f92672">.</span>free <span style="color:#f92672">//</span> (<span style="color:#ae81ff">1024</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">GB&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> percent_used <span style="color:#f92672">&gt;</span> IMAGE_STORAGE_MAX_USAGE_PERCENT:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;磁盘使用率 (</span><span style="color:#e6db74">{</span>percent_used<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%) 已超过阈值 (</span><span style="color:#e6db74">{</span>IMAGE_STORAGE_MAX_USAGE_PERCENT<span style="color:#e6db74">}</span><span style="color:#e6db74">%). &#34;</span>
+</span></span><span style="display:flex;"><span>                           <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试清理 </span><span style="color:#e6db74">{</span>IMAGE_STORAGE_CLEANUP_BATCH_DAYS<span style="color:#e6db74">}</span><span style="color:#e6db74"> 个最旧的日期目录...&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(IMAGE_STORAGE_CLEANUP_BATCH_DAYS):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): 
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Shutdown requested during disk cleanup.&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                oldest_dir_to_delete <span style="color:#f92672">=</span> get_oldest_day_dir(IMAGE_SAVE_BASE_DIR)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> oldest_dir_to_delete:
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;准备删除最旧的日期目录 (</span><span style="color:#e6db74">{</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{</span>IMAGE_STORAGE_CLEANUP_BATCH_DAYS<span style="color:#e6db74">}</span><span style="color:#e6db74">): </span><span style="color:#e6db74">{</span>oldest_dir_to_delete<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                        shutil<span style="color:#f92672">.</span>rmtree(oldest_dir_to_delete)
+</span></span><span style="display:flex;"><span>                        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;已成功删除目录: </span><span style="color:#e6db74">{</span>oldest_dir_to_delete<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;删除目录 </span><span style="color:#e6db74">{</span>oldest_dir_to_delete<span style="color:#e6db74">}</span><span style="color:#e6db74"> 失败: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;没有找到可以删除的旧日期目录。&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">FileNotFoundError</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;磁盘空间监控路径 </span><span style="color:#e6db74">{</span>IMAGE_STORAGE_MONITOR_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> 未找到。&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;检查或管理磁盘空间时发生错误: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Get Current Capture Interval ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_current_capture_interval</span>() <span style="color:#f92672">-&gt;</span> int: <span style="color:#75715e"># Identical to v2.0.0</span>
+</span></span><span style="display:flex;"><span>    now_time <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> schedule_item <span style="color:#f92672">in</span> CAPTURE_SCHEDULE_CONFIG:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> now_time <span style="color:#f92672">&lt;</span> schedule_item[<span style="color:#e6db74">&#34;end_time_exclusive&#34;</span>]:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> schedule_item[<span style="color:#e6db74">&#34;interval_seconds&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> DEFAULT_INTERVAL_LATE_NIGHT
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Main Service Logic ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_capture_service</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> shutdown_event, cap, effective_fourcc <span style="color:#75715e"># cap and effective_fourcc might be better as instance vars if this were a class</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> consecutive_imwrite_failures, consecutive_read_failures <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> last_significant_frame
+</span></span><span style="display:flex;"><span>    last_significant_frame <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span> <span style="color:#75715e"># 确保服务启动时重置</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    cap <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span> <span style="color:#75715e"># Ensure cap is defined in this scope</span>
+</span></span><span style="display:flex;"><span>    effective_fourcc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NOT_SET_INITIALLY&#34;</span>
+</span></span><span style="display:flex;"><span>    init_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    last_disk_check_time <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    consecutive_imwrite_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Reset counters at service start</span>
+</span></span><span style="display:flex;"><span>    consecutive_read_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;图像捕获服务主逻辑启动。&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... (logging of schedule, camera target etc. from v2.0.0)</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  时间表: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span><span style="color:#f92672">.</span>join([<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;</span><span style="color:#e6db74">{</span>s[<span style="color:#e6db74">&#39;end_time_exclusive&#39;</span>]<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%H:%M&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{</span>s[<span style="color:#e6db74">&#39;interval_seconds&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">s)&#34;</span> <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> CAPTURE_SCHEDULE_CONFIG]) <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;, &gt;=22:00 (</span><span style="color:#e6db74">{</span>DEFAULT_INTERVAL_LATE_NIGHT<span style="color:#e6db74">}</span><span style="color:#e6db74">s)&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  目标摄像头: </span><span style="color:#e6db74">{</span>DEFAULT_CAMERA_DEVICE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  摄像头参数：</span><span style="color:#e6db74">{</span>DEFAULT_WIDTH<span style="color:#e6db74">}</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{</span>DEFAULT_HEIGHT<span style="color:#e6db74">}</span><span style="color:#e6db74">, FOURCC: </span><span style="color:#e6db74">{</span>REQUESTED_FOURCC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  图片保存至: </span><span style="color:#e6db74">{</span>IMAGE_SAVE_BASE_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74"> (JPEG质量: </span><span style="color:#e6db74">{</span>JPEG_SAVE_QUALITY<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  磁盘监控: 路径 &#39;</span><span style="color:#e6db74">{</span>IMAGE_STORAGE_MONITOR_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;, 阈值 </span><span style="color:#e6db74">{</span>IMAGE_STORAGE_MAX_USAGE_PERCENT<span style="color:#e6db74">}</span><span style="color:#e6db74">%&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    last_capture_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>monotonic() 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> shutdown_event<span style="color:#f92672">.</span>is_set():
+</span></span><span style="display:flex;"><span>        current_interval <span style="color:#f92672">=</span> get_current_capture_interval()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            current_monotonic_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>monotonic()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> current_monotonic_time <span style="color:#f92672">-</span> last_disk_check_time <span style="color:#f92672">&gt;</span> DISK_CHECK_INTERVAL_SECONDS:
+</span></span><span style="display:flex;"><span>                check_and_manage_disk_space()
+</span></span><span style="display:flex;"><span>                last_disk_check_time <span style="color:#f92672">=</span> current_monotonic_time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> cap <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">or</span> <span style="color:#f92672">not</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;摄像头未连接或需要重新初始化...&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> cap: cap<span style="color:#f92672">.</span>release() 
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                cap, effective_fourcc <span style="color:#f92672">=</span> initialize_camera(
+</span></span><span style="display:flex;"><span>                    DEFAULT_CAMERA_DEVICE_PATH, DEFAULT_WIDTH, DEFAULT_HEIGHT, REQUESTED_FOURCC
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> cap:
+</span></span><span style="display:flex;"><span>                    init_failures <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;摄像头初始化失败 (连续第 </span><span style="color:#e6db74">{</span>init_failures<span style="color:#e6db74">}</span><span style="color:#e6db74"> 次)。&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> init_failures <span style="color:#f92672">&gt;=</span> CAMERA_INIT_FAILURE_MAX_CONSECUTIVE:
+</span></span><span style="display:flex;"><span>                        logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;已连续 </span><span style="color:#e6db74">{</span>init_failures<span style="color:#e6db74">}</span><span style="color:#e6db74"> 次无法初始化摄像头。将等待较长时间 (</span><span style="color:#e6db74">{</span>CAMERA_INIT_LONG_BACKOFF_SECONDS<span style="color:#e6db74">}</span><span style="color:#e6db74">s) 后重试。&#34;</span>)
+</span></span><span style="display:flex;"><span>                        shutdown_event<span style="color:#f92672">.</span>wait(CAMERA_INIT_LONG_BACKOFF_SECONDS)
+</span></span><span style="display:flex;"><span>                        init_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                        shutdown_event<span style="color:#f92672">.</span>wait(CAMERA_INIT_RETRY_DELAY_SECONDS)
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">continue</span> 
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                init_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+</span></span><span style="display:flex;"><span>                last_capture_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>monotonic() 
+</span></span><span style="display:flex;"><span>                consecutive_read_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Reset read failure counter on successful init</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            elapsed_since_last_capture <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>monotonic() <span style="color:#f92672">-</span> last_capture_time
+</span></span><span style="display:flex;"><span>            wait_time <span style="color:#f92672">=</span> current_interval <span style="color:#f92672">-</span> elapsed_since_last_capture
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> wait_time <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># logger.info(f&#34;当前时间: {datetime.now().strftime(&#39;%H:%M:%S&#39;)}, 间隔: {current_interval}s. 还需 {wait_time:.2f} 秒...&#34;)</span>
+</span></span><span style="display:flex;"><span>                shutdown_event<span style="color:#f92672">.</span>wait(timeout<span style="color:#f92672">=</span>wait_time) 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> shutdown_event<span style="color:#f92672">.</span>is_set(): <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            last_capture_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>monotonic() 
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;尝试捕获图像帧 (当前间隔: </span><span style="color:#e6db74">{</span>current_interval<span style="color:#e6db74">}</span><span style="color:#e6db74">s)...&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 清空缓冲帧</span>
+</span></span><span style="display:flex;"><span>                cap<span style="color:#f92672">.</span>grab();
+</span></span><span style="display:flex;"><span>            ret, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ret <span style="color:#f92672">or</span> frame <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;无法从摄像头获取图像帧。摄像头可能已断开连接或出现问题。&#34;</span>)
+</span></span><span style="display:flex;"><span>                consecutive_read_failures <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e"># MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;连续读帧失败次数: </span><span style="color:#e6db74">{</span>consecutive_read_failures<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> cap: cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>                cap <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span> 
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> consecutive_read_failures <span style="color:#f92672">&gt;=</span> MAX_CONSECUTIVE_READ_FAILURES:
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;已连续 </span><span style="color:#e6db74">{</span>consecutive_read_failures<span style="color:#e6db74">}</span><span style="color:#e6db74"> 次无法读取帧。将等待较长时间 (</span><span style="color:#e6db74">{</span>READ_FAILURE_LONG_BACKOFF_SECONDS<span style="color:#e6db74">}</span><span style="color:#e6db74">s) 后尝试重连。&#34;</span>)
+</span></span><span style="display:flex;"><span>                    shutdown_event<span style="color:#f92672">.</span>wait(READ_FAILURE_LONG_BACKOFF_SECONDS)
+</span></span><span style="display:flex;"><span>                    consecutive_read_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Reset after long backoff</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                    shutdown_event<span style="color:#f92672">.</span>wait(FRAME_READ_ERROR_RETRY_DELAY_SECONDS) 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            consecutive_read_failures <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Reset on successful read MODIFICATION v2.0.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            saved_filepath <span style="color:#f92672">=</span> process_and_save_frame(
+</span></span><span style="display:flex;"><span>                frame, effective_fourcc, IMAGE_SAVE_BASE_DIR, 
+</span></span><span style="display:flex;"><span>                JPEG_SAVE_QUALITY, TIMESTAMP_FORMAT
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> saved_filepath <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;SIMILARITY&#34;</span>:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">&#34;图像接近，跳过保存&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> isinstance(saved_filepath, str) <span style="color:#f92672">and</span> saved_filepath<span style="color:#f92672">.</span>lower()<span style="color:#f92672">.</span>endswith(<span style="color:#e6db74">&#34;.jpg&#34;</span>):
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;图像捕获并成功保存: </span><span style="color:#e6db74">{</span>saved_filepath<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># consecutive_imwrite_failures is reset inside process_and_save_frame</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;本次图像捕获未能成功保存。&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># consecutive_imwrite_failures is incremented inside process_and_save_frame</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> consecutive_imwrite_failures <span style="color:#f92672">&gt;=</span> MAX_CONSECUTIVE_IMWRITE_FAILURES:
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;已连续 </span><span style="color:#e6db74">{</span>consecutive_imwrite_failures<span style="color:#e6db74">}</span><span style="color:#e6db74"> 次无法保存图像到磁盘。服务将停止。&#34;</span>)
+</span></span><span style="display:flex;"><span>                    shutdown_event<span style="color:#f92672">.</span>set() <span style="color:#75715e"># Signal shutdown</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span> <span style="color:#75715e"># Exit while loop</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> cv2<span style="color:#f92672">.</span>error <span style="color:#66d9ef">as</span> e: 
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;主循环中发生 OpenCV 特定错误: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> cap: cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>            cap <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;因 OpenCV 错误，将等待 </span><span style="color:#e6db74">{</span>CAMERA_INIT_RETRY_DELAY_SECONDS<span style="color:#e6db74">}</span><span style="color:#e6db74">s 后尝试重启摄像头。&#34;</span>)
+</span></span><span style="display:flex;"><span>            shutdown_event<span style="color:#f92672">.</span>wait(CAMERA_INIT_RETRY_DELAY_SECONDS)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e: 
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;主循环中发生未预料的严重错误: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> cap: cap<span style="color:#f92672">.</span>release() 
+</span></span><span style="display:flex;"><span>            cap <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;因严重错误，将等待 </span><span style="color:#e6db74">{</span>CAMERA_INIT_LONG_BACKOFF_SECONDS<span style="color:#e6db74">}</span><span style="color:#e6db74">s 后尝试重启摄像头。&#34;</span>)
+</span></span><span style="display:flex;"><span>            shutdown_event<span style="color:#f92672">.</span>wait(CAMERA_INIT_LONG_BACKOFF_SECONDS)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Consider uncommenting &#39;raise&#39; for systemd to handle restart on truly unrecoverable errors</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># raise</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Loop exited (likely due to shutdown_event)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cap <span style="color:#f92672">and</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;正在释放摄像头资源...&#34;</span>)
+</span></span><span style="display:flex;"><span>        cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;图像捕获服务主逻辑已停止。&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Main Application Entry Point &amp; CLI Argument Parsing ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> logger, PID_FILE_PATH <span style="color:#75715e"># Allow modification if args change them</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Image Capture Service (v</span><span style="color:#e6db74">{</span>SCRIPT_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;action&#39;</span>, nargs<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;?&#39;</span>, choices<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;start&#39;</span>, <span style="color:#e6db74">&#39;stop&#39;</span>, <span style="color:#e6db74">&#39;status&#39;</span>, <span style="color:#e6db74">&#39;foreground&#39;</span>], 
+</span></span><span style="display:flex;"><span>                        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;foreground&#39;</span>, 
+</span></span><span style="display:flex;"><span>                        help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Action: start (daemonize - for traditional init), stop, status, or foreground (default, for systemd/debug).&#34;</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;--pidfile&#39;</span>, default<span style="color:#f92672">=</span>PID_FILE_PATH, 
+</span></span><span style="display:flex;"><span>                        help<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Path to PID file (default: </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;--logdir&#39;</span>, default<span style="color:#f92672">=</span>LOG_DIR, help<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Path to log directory (default: </span><span style="color:#e6db74">{</span>LOG_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;--loglevel&#39;</span>, default<span style="color:#f92672">=</span>LOG_LEVEL_CONFIG, choices<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;DEBUG&#39;</span>, <span style="color:#e6db74">&#39;INFO&#39;</span>, <span style="color:#e6db74">&#39;WARNING&#39;</span>, <span style="color:#e6db74">&#39;ERROR&#39;</span>, <span style="color:#e6db74">&#39;CRITICAL&#39;</span>],
+</span></span><span style="display:flex;"><span>                        help<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Logging level (default: </span><span style="color:#e6db74">{</span>LOG_LEVEL_CONFIG<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># For true daemonization with python-daemon, more args like --user, --group, --working-directory would be needed.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># For now, &#39;start&#39; is conceptual if not using systemd or a proper daemon library.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    PID_FILE_PATH <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>abspath(args<span style="color:#f92672">.</span>pidfile)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Initialize logging system (now that PID_FILE_PATH for potential log inside pid dir is known)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        os<span style="color:#f92672">.</span>makedirs(args<span style="color:#f92672">.</span>logdir, exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Also ensure image save base dir exists before service starts trying to write into it.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(IMAGE_SAVE_BASE_DIR): <span style="color:#75715e"># This check should ideally use an absolute path too</span>
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>makedirs(IMAGE_SAVE_BASE_DIR, exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If using print before logger is initialized</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;CRITICAL: Failed to create essential directories (Log dir: </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>logdir<span style="color:#e6db74">}</span><span style="color:#e6db74"> or Image Base: </span><span style="color:#e6db74">{</span>IMAGE_SAVE_BASE_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">): </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    logger <span style="color:#f92672">=</span> setup_logging_system(args<span style="color:#f92672">.</span>logdir, LOG_FILE_NAME, args<span style="color:#f92672">.</span>loglevel<span style="color:#f92672">.</span>upper(), 
+</span></span><span style="display:flex;"><span>                                  LOG_ROTATE_WHEN, LOG_ROTATE_INTERVAL, LOG_ROTATE_BACKUP_COUNT)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Handle actions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;start&#39;</span> <span style="color:#f92672">or</span> args<span style="color:#f92672">.</span>action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;foreground&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;start&#39;</span>: <span style="color:#75715e"># For &#39;start&#39;, implies daemonization is desired if not under systemd</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Action &#39;start&#39;: Daemonization not yet fully implemented in this script for non-systemd. Running in foreground.&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;For systemd, use Type=simple and run script directly (which defaults to foreground).&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># If using python-daemon, daemonization context would be entered here.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># For now, &#39;start&#39; and &#39;foreground&#39; behave similarly.</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Starting </span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> v</span><span style="color:#e6db74">{</span>SCRIPT_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74"> in foreground mode...&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check PID file before creating a new one</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">with</span> open(PID_FILE_PATH, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f_pid_check:
+</span></span><span style="display:flex;"><span>                    existing_pid <span style="color:#f92672">=</span> int(f_pid_check<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip())
+</span></span><span style="display:flex;"><span>                os<span style="color:#f92672">.</span>kill(existing_pid, <span style="color:#ae81ff">0</span>) <span style="color:#75715e"># Check if process with this PID is running</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Service already running with PID </span><span style="color:#e6db74">{</span>existing_pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> (found in </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">). If this is wrong, remove PID file and restart.&#34;</span>)
+</span></span><span style="display:flex;"><span>                sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>) 
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">IOError</span>, <span style="color:#a6e22e">ValueError</span>, <span style="color:#a6e22e">ProcessLookupError</span>): 
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Found stale PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">. Removing it.&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span>: os<span style="color:#f92672">.</span>remove(PID_FILE_PATH)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> e_rm: logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error removing stale PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e_rm<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        create_pid_file()
+</span></span><span style="display:flex;"><span>        signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGTERM, signal_term_handler)
+</span></span><span style="display:flex;"><span>        signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGINT, signal_term_handler) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            run_capture_service() 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e: 
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unhandled exception in run_capture_service: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>critical(traceback<span style="color:#f92672">.</span>format_exc()) <span style="color:#75715e"># Ensure full traceback is logged</span>
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>            remove_pid_file() 
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> has shut down.&#34;</span>)
+</span></span><span style="display:flex;"><span>            logging<span style="color:#f92672">.</span>shutdown() 
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> args<span style="color:#f92672">.</span>action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;stop&#39;</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Action: stop&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> not found. Service may not be running.&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>) <span style="color:#75715e"># Changed to 1 as &#34;not running&#34; is often a failure for &#34;stop&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> open(PID_FILE_PATH, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>                pid <span style="color:#f92672">=</span> int(f<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">IOError</span>, <span style="color:#a6e22e">ValueError</span>) <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Invalid PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">. Remove it manually if service is stuck.&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Sending SIGTERM to process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">...&#34;</span>)
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>kill(pid, signal<span style="color:#f92672">.</span>SIGTERM)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            terminated_successfully <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Waiting up to 10 seconds for process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> to terminate...&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>): <span style="color:#75715e"># Wait up to 10 seconds</span>
+</span></span><span style="display:flex;"><span>                time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>) <span style="color:#75715e"># 等待1秒</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                    os<span style="color:#f92672">.</span>kill(pid, <span style="color:#ae81ff">0</span>) <span style="color:#75715e"># 检查进程是否仍然存在</span>
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> is still alive (attempt </span><span style="color:#e6db74">{</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">/10).&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ProcessLookupError</span>:
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> terminated successfully within </span><span style="color:#e6db74">{</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> second(s).&#34;</span>)
+</span></span><span style="display:flex;"><span>                    terminated_successfully <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span> <span style="color:#75715e"># 进程已终止，退出等待循环</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e_check: <span style="color:#75715e"># 其他检查时发生的错误</span>
+</span></span><span style="display:flex;"><span>                    logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error checking status for PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e_check<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># 发生错误，可能无法确认状态，也退出循环</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> terminated_successfully:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 如果10秒后循环正常结束，但进程未被确认终止（通常意味着os.kill(pid,0)没报错）</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> did not terminate after 10 seconds. Consider manual check or SIGKILL.&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 您原始代码中在这之后还有一个try/except ProcessLookupError来做最后确认，</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 如果这里的逻辑是，即使循环完了，还想再确认一次，是可以保留的。</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 但如果上面的循环因为ProcessLookupError退出了，terminated_successfully会是true。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ProcessLookupError</span>: <span style="color:#75715e"># 这个捕获的是 os.kill(pid, signal.SIGTERM) 时，进程就已经不存在的情况</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> was already terminated or PID was invalid when SIGTERM was attempted.&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">PermissionError</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;No permission to send signal to process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">. Are you root?&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error stopping service: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> terminated_successfully <span style="color:#f92672">and</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 服务进程已被此 &#39;stop&#39; 命令确认终止，</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 但其 PID 文件仍然存在（服务可能未能自行删除）。</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 可以安全地将其作为陈旧 PID 文件移除。</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> terminated, but its PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> still exists. Removing stale PID file.&#34;</span>)
+</span></span><span style="display:flex;"><span>                remove_pid_file()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> <span style="color:#f92672">not</span> terminated_successfully <span style="color:#f92672">and</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 服务进程未被此 &#39;stop&#39; 命令确认终止，且 PID 文件仍然存在。</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 此时不应自动删除 PID 文件，因为它可能仍然代表一个正在运行（但可能卡住）的进程。</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> may still be running after stop attempt. PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> will not be removed by this &#39;stop&#39; action.&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 如果 os.path.exists(PID_FILE_PATH) 为 False，说明PID文件已经被服务进程自己清掉了，或者一开始就没有，这里不需要额外操作。</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> args<span style="color:#f92672">.</span>action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;status&#39;</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Action: status&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(PID_FILE_PATH):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> is not running (no PID file).&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> is not running (no PID file).&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">3</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> open(PID_FILE_PATH, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>                pid <span style="color:#f92672">=</span> int(f<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">IOError</span>, <span style="color:#a6e22e">ValueError</span>):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> status unknown (invalid PID file: </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">).&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Invalid PID file: </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">4</span>) 
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>kill(pid, <span style="color:#ae81ff">0</span>) 
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> is running with PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">.&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> is running with PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">.&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ProcessLookupError</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> is not running (PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> from stale PID file </span><span style="color:#e6db74">{</span>PID_FILE_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74"> not found).&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Stale PID file: process </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> not found. Removing PID file.&#34;</span>)
+</span></span><span style="display:flex;"><span>            remove_pid_file()
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">3</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">PermissionError</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>SCRIPT_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> with PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74"> seems to be running, but no permission to check fully.&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Running with PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">, but no permission to check fully.&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">4</span>) 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error checking status for PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error checking status for PID </span><span style="color:#e6db74">{</span>pid<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">4</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Basic signal handling for the main entry point itself, before run_capture_service sets its own</span>
+</span></span><span style="display:flex;"><span>    signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGTERM, signal_term_handler) 
+</span></span><span style="display:flex;"><span>    signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGINT, signal_term_handler) 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        main()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">SystemExit</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># sys.exit() was called, possibly by argparse or our own logic.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># The exit code is in e.code. Logging already done or not needed.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Simply re-raise to ensure the script exits with the correct code.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> logger: logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Script explicitly exited with status </span><span style="color:#e6db74">{</span>e<span style="color:#f92672">.</span>code<span style="color:#e6db74">}</span><span style="color:#e6db74">.&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>: print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Script explicitly exited with status </span><span style="color:#e6db74">{</span>e<span style="color:#f92672">.</span>code<span style="color:#e6db74">}</span><span style="color:#e6db74">.&#34;</span>, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Catch any other unexpected top-level exceptions</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> logger: <span style="color:#75715e"># If logger was initialized</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>critical(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unhandled top-level exception caused script termination: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>critical(traceback<span style="color:#f92672">.</span>format_exc())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>: <span style="color:#75715e"># Logger not even initialized, print to stderr</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;CRITICAL: Unhandled top-level exception: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>            print(traceback<span style="color:#f92672">.</span>format_exc(), file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>) <span style="color:#75715e"># General error</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> logger <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> shutdown_event<span style="color:#f92672">.</span>is_set(): <span style="color:#75715e"># If not already shutting down via signal</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Script __main__ scope is finishing.&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Ensure logging handlers are flushed and closed if script exits this way</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># However, if run_capture_service exited cleanly, it would call logging.shutdown()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># This is a final failsafe.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> logging<span style="color:#f92672">.</span>getLogger(SCRIPT_NAME)<span style="color:#f92672">.</span>hasHandlers(): <span style="color:#75715e"># Check if logger was indeed set up</span>
+</span></span><span style="display:flex;"><span>            logging<span style="color:#f92672">.</span>shutdown()
+</span></span></code></pre></div><p>配套 systemctl 控制：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[Unit]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Description</span><span style="color:#f92672">=</span><span style="color:#e6db74">Armbian Camera Capture Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Documentation</span><span style="color:#f92672">=</span><span style="color:#e6db74">https://your-documentation-url-here.com # 可选：指向您的文档</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">RequiresMountsFor</span><span style="color:#f92672">=</span><span style="color:#e6db74">/opt/camera/captures</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">After</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-user.target network.target opt-camera-captures.mount</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果明确知道摄像头设备，可以更精确地控制启动顺序</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 例如: Wants=dev-video2.device After=dev-video2.device</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Service]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 基本配置 ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#e6db74">simple</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WorkingDirectory</span><span style="color:#f92672">=</span><span style="color:#e6db74">/opt/camera</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ExecStart</span><span style="color:#f92672">=</span><span style="color:#e6db74">/opt/camera/opencv/bin/python /opt/camera/capture.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ExecStop</span><span style="color:#f92672">=</span><span style="color:#e6db74">/bin/kill -TERM $MAINPID</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 自动重启策略 ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Restart</span><span style="color:#f92672">=</span><span style="color:#e6db74">on-failure # 或 &#39;always&#39;。&#39;on-failure&#39; 表示仅在脚本以非0状态退出时重启</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">RestartSec</span><span style="color:#f92672">=</span><span style="color:#e6db74">10      # 重启前等待10秒</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StartLimitIntervalSec</span><span style="color:#f92672">=</span><span style="color:#e6db74">300 # 在300秒内</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StartLimitBurst</span><span style="color:#f92672">=</span><span style="color:#e6db74">5         # 最多尝试重启5次，防止无限重启循环</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 日志和环境 ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Environment</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;PYTHONUNBUFFERED=1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StandardOutput</span><span style="color:#f92672">=</span><span style="color:#e6db74">journal # 将Python脚本的stdout重定向到systemd journal</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StandardError</span><span style="color:#f92672">=</span><span style="color:#e6db74">journal  # 将Python脚本的stderr重定向到systemd journal</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">SyslogIdentifier</span><span style="color:#f92672">=</span><span style="color:#e6db74">armbian-camera-capture</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 安全性增强 (重要) ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 限制文件系统访问</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ProtectSystem</span><span style="color:#f92672">=</span><span style="color:#e6db74">strict     # /usr, /boot, /etc 设为只读</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ProtectHome</span><span style="color:#f92672">=</span><span style="color:#e6db74">true         # /home, /root 目录不可访问</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">PrivateTmp</span><span style="color:#f92672">=</span><span style="color:#e6db74">true          # 使用私有的 /tmp 和 /var/tmp 目录</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">PrivateDevices</span><span style="color:#f92672">=</span><span style="color:#e6db74">true      # 默认不暴露设备，除非通过 DeviceAllow 明确允许</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ProtectKernelTunables</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ProtectKernelModules</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ProtectControlGroups</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">RestrictAddressFamilies</span><span style="color:#f92672">=</span><span style="color:#e6db74">AF_UNIX # 根据需要调整，如果只用本地设备，AF_UNIX可能就够了</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">RestrictRealtime</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 限制权限提升</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">NoNewPrivileges</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 明确允许访问摄像头设备 (假设是 /dev/video2)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DeviceAllow=/dev/video[1-6] rw</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">DeviceAllow</span><span style="color:#f92672">=</span><span style="color:#e6db74">/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._UGREEN_Camera_2K_SN0001-video-index0 rw</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果还需要访问其他设备 (例如特定USB控制器)，也在此处添加</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 进一步限制能力 (根据脚本实际需要的能力，尽可能减少)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 对于这个脚本，除了设备访问，可能不需要太多其他特殊能力</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">CapabilityBoundingSet</span><span style="color:#f92672">=</span><span style="color:#e6db74">~CAP_SYS_ADMIN CAP_NET_ADMIN CAP_SYS_PTRACE CAP_SYS_BOOT CAP_SYS_MODULE CAP_SYS_RAWIO CAP_SYS_TIME CAP_SETUID CAP_SETGID CAP_SETPCAP CAP_LINUX_IMMUTABLE CAP_IPC_LOCK CAP_IPC_OWNER CAP_SYSLOG CAP_MAC_ADMIN CAP_MAC_OVERRIDE CAP_NET_BROADCAST CAP_NET_BIND_SERVICE CAP_AUDIT_CONTROL CAP_AUDIT_READ CAP_AUDIT_WRITE</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 上面是排除了很多不必要的能力，保留了默认需要的一些基本能力。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果脚本非常简单，可以进一步收紧。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 资源限制 (可选) ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># LimitNOFILE=1024        # 最大打开文件数</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># LimitNPROC=512          # 最大进程数</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CPUQuota=50%            # CPU使用配额</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># MemoryMax=512M          # 最大内存使用</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ---- 超时设置 ----</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">TimeoutStopSec</span><span style="color:#f92672">=</span><span style="color:#e6db74">30s        # 优雅停止的超时时间 (默认90s)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Install]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WantedBy</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-user.target</span>
+</span></span></code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://www.tianhao.me/" >
+    &copy;  牙刷刷的小站 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
