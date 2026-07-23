@@ -82,7 +82,7 @@ graph LR
 5. 启用认证、授权功能，包括多因素认证以及 Passkey 等；
 6. 外部用户通过 NT 平台访问，身份校验后由公网服务器代理请求至家庭网关，再转发至目标服务。
 
-![NT 架构图](f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg)
+![NT 架构图](/uploads/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg)
 
 ---
 
@@ -103,7 +103,7 @@ iptables -A INPUT -p tcp -s <NT公网IP> --dport 8080 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8080 -j DROP
 ```
 
-![防火墙配置](550e8400-e29b-41d4-a716-446655440000.png)
+![防火墙配置](/uploads/550e8400-e29b-41d4-a716-446655440000.png)
 
 ---
 

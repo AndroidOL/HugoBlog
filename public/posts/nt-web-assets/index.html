@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="探讨如何利用Next-Terminal构建安全的家庭内网访问方案，解决公网暴露风险问题">
 <title>Next-Terminal：家庭内网安全访问解决方案</title>
 
-<link rel='canonical' href='https://www.tianhao.me/posts/nt-web-assets/'>
 
-<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="Next-Terminal：家庭内网安全访问解决方案">
+<link rel="canonical" href="http://localhost:1313/posts/nt-web-assets/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+
+
+<link rel="stylesheet" href="/scss/style.min.e62e09c60ba428a627e03568fa3df938f6a8224f815b5846f00816c17d4a0be4.css"><meta property='og:title' content="Next-Terminal：家庭内网安全访问解决方案">
 <meta property='og:description' content="探讨如何利用Next-Terminal构建安全的家庭内网访问方案，解决公网暴露风险问题">
-<meta property='og:url' content='https://www.tianhao.me/posts/nt-web-assets/'>
+<meta property='og:url' content='http://localhost:1313/posts/nt-web-assets/'>
 <meta property='og:site_name' content='牙刷刷的小站'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-07-11T19:43:25&#43;08:00'/><meta property='article:modified_time' content='2025-07-11T19:43:25&#43;08:00'/>
 <meta name="twitter:title" content="Next-Terminal：家庭内网安全访问解决方案">
 <meta name="twitter:description" content="探讨如何利用Next-Terminal构建安全的家庭内网访问方案，解决公网暴露风险问题">
     <link rel="shortcut icon" href="/favicon.ico" />
 
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XEDP14XQG"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3XEDP14XQG');
+        }
+      </script>
     </head>
     <body class="
     article-page
@@ -42,32 +62,26 @@
     })();
 </script>
 <div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>
     </button>
 
     <header>
-        
-            
-            <figure class="site-avatar">
+        <figure class="site-avatar">
                 <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
+                    <img src="/img/avatar.png" 
+                        width=""
+                        height=""
+                        class="site-logo"
+                        loading="lazy"
+                        alt="Avatar">
                 </a>
                 
                     <span class="emoji">🍥</span>
                 
             </figure>
-            
         
         
         <div class="site-meta">
@@ -79,7 +93,7 @@
                 <li>
                     <a 
                         href='https://github.com/AndroidOL'
-                        target="_blank"
+                        
                         title="GitHub"
                         rel="me"
                     >
@@ -101,9 +115,8 @@
         
         <li class="menu-bottom-section">
             <ol class="menu">
-                    
-                        <li id="i18n-switch">  
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <li id="i18n-switch">  
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
   <path d="M4 5h7" />
   <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
@@ -114,15 +127,30 @@
 
 
 
-                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                            
                                 
-                                    <option value="https://www.tianhao.me/" selected>中文</option>
                                 
-                                    <option value="https://www.tianhao.me/en/" >English</option>
+                                    
+                                        
+                                    
                                 
-                            </select>
-                        </li>
-                    
+                                    
+                                
+                                <option value="/posts/nt-web-assets/" selected>中文</option>
+                            
+                                
+                                
+                                    
+                                
+                                    
+                                        
+                                    
+                                
+                                <option value="/en/posts/nt-web-assets/" >English</option>
+                            
+                        </select>
+                    </li>
                 
 
                 
@@ -143,7 +171,7 @@
 
 
 
-                        <span>暗色模式</span>
+                        <span></span>
                     </li>
                 
             </ol>
@@ -176,10 +204,14 @@
     
     
     
-    <footer class="article-time">
+    
+    
+    
+    <footer class="article-meta">
         
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <div class="inline-meta">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
   <circle cx="18" cy="18" r="4" />
@@ -188,13 +220,11 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jul 11, 2025</time>
-            </div>
-        
+                    <time class="article-time--published" datetime='2025-07-11T19:43:25&#43;08:00'>Jul 11, 2025</time>
+                
 
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -202,17 +232,16 @@
 
 
 
-                <time class="article-time--reading">
-                    阅读时长: 5 分钟
-                </time>
+                    <time class="article-time--reading">
+                        
+                    </time>
+                
             </div>
         
-    </footer>
-    
 
-    
-        <footer class="article-translations">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div class="inline-meta">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
   <path d="M4 5h7" />
   <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
@@ -223,16 +252,20 @@
 
 
 
-            <div>
                 
-                    <a href="https://www.tianhao.me/en/posts/nt-web-assets/" class="link">English</a>
+                    <a href="/en/posts/nt-web-assets/" class="link">English</a>
                 
             </div>
-        </footer>
+        
+
+        
+    </footer>
     
 </div>
 
 </header>
+
+    
 
     <section class="article-content">
     
@@ -265,8 +298,11 @@
 <li>由于 IPv6 地址空间虽大，但仍可<strong>进行特定范围段的端口扫描与暴力测试</strong>；</li>
 <li>很多家庭设备的防火墙并未对 IPv6 有严格配置，一旦开放了某个端口，可能直接被访问。</li>
 </ul>
-<blockquote>
-<p><strong>安全警示</strong>：IPv6的全球可达性特性使家庭设备更容易被定位和攻击。</p></blockquote>
+
+    <blockquote>
+        <p><strong>安全警示</strong>：IPv6的全球可达性特性使家庭设备更容易被定位和攻击。</p>
+
+    </blockquote>
 <hr>
 <h2 id="二next-terminal-如何帮你解决以上问题">二、Next-Terminal 如何帮你解决以上问题？
 </h2><p>Next-Terminal 采用“统一入口代理+精细化权限控制”机制，主要特点包括：</p>
@@ -276,21 +312,10 @@
 <li><strong>支持细粒度访问控制与登录认证</strong>；</li>
 <li><strong>可审计、可管理、可授权访问你的服务</strong>。</li>
 </ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph LR
-</span></span><span class="line"><span class="cl">    A[用户] --&gt; B[NT 公网节点]
-</span></span><span class="line"><span class="cl">    B --&gt; C[家庭网关]
-</span></span><span class="line"><span class="cl">    C --&gt; D[内网服务]
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="场景模拟将家庭内网网站安全暴露给公网">场景模拟：将家庭内网网站安全暴露给公网
+<pre class="mermaid" style="visibility:hidden">graph LR
+    A[用户] --> B[NT 公网节点]
+    B --> C[家庭网关]
+    C --> D[内网服务]</pre><h3 id="场景模拟将家庭内网网站安全暴露给公网">场景模拟：将家庭内网网站安全暴露给公网
 </h3><p>假设你家中部署了一个网站（如 <code>http://192.168.1.100:8080</code>），你想在外面访问它，但又不希望任何人都能直接连接。</p>
 <p>传统做法：直接端口映射到公网，问题在于安全性欠考量<br>
 改进做法：使用 NT 的<strong>反向代理+权限验证</strong></p>
@@ -311,16 +336,7 @@
 <li>启用认证、授权功能，包括多因素认证以及 Passkey 等；</li>
 <li>外部用户通过 NT 平台访问，身份校验后由公网服务器代理请求至家庭网关，再转发至目标服务。</li>
 </ol>
-<p><img src="/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg"
-	
-	
-	
-	loading="lazy"
-	
-		alt="NT 架构图"
-	
-	
-></p>
+<p><img alt="NT 架构图" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/uploads/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg"></p>
 <hr>
 <h2 id="三防火墙策略只信任公网服务器拒绝一切其它访问">三、防火墙策略：只信任公网服务器，拒绝一切其它访问
 </h2><p>为了进一步提升安全性，你可以在家中路由器或软路由中设置如下防火墙规则：</p>
@@ -345,65 +361,56 @@
 </span></span><span class="line"><span class="cl">iptables -A INPUT -p tcp --dport <span class="m">8080</span> -j DROP
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><img src="/550e8400-e29b-41d4-a716-446655440000.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="防火墙配置"
-	
-	
-></p>
+</div><p><img alt="防火墙配置" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/uploads/550e8400-e29b-41d4-a716-446655440000.png"></p>
 <hr>
 <h2 id="四与传统-vpnfrp-方案对比">四、与传统 VPN、FRP 方案对比
 </h2><div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>特性</th>
-          <th>VPN</th>
-          <th>FRP</th>
-          <th>NextTerminal ✅</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>安全性</td>
-          <td>高（需硬件）</td>
-          <td>中等（需配置）</td>
-          <td>高（精细授权）</td>
-      </tr>
-      <tr>
-          <td>易用性</td>
-          <td>外部访问需客户端</td>
-          <td>配置复杂</td>
-          <td>网页访问即可</td>
-      </tr>
-      <tr>
-          <td>部署难度</td>
-          <td>简单（硬件）</td>
-          <td>中</td>
-          <td>简单（容器部署）</td>
-      </tr>
-      <tr>
-          <td>用户权限管理</td>
-          <td>✅ 支持</td>
-          <td>不支持</td>
-          <td>✅ 支持</td>
-      </tr>
-      <tr>
-          <td>日志与审计</td>
-          <td>不便查询</td>
-          <td>不支持</td>
-          <td>✅ 支持</td>
-      </tr>
-      <tr>
-          <td>内网服务代理能力</td>
-          <td>✅ 自动配置</td>
-          <td>需端口映射</td>
-          <td>✅ 自动代理</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>特性</th>
+					<th>VPN</th>
+					<th>FRP</th>
+					<th>NextTerminal ✅</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>安全性</td>
+					<td>高（需硬件）</td>
+					<td>中等（需配置）</td>
+					<td>高（精细授权）</td>
+			</tr>
+			<tr>
+					<td>易用性</td>
+					<td>外部访问需客户端</td>
+					<td>配置复杂</td>
+					<td>网页访问即可</td>
+			</tr>
+			<tr>
+					<td>部署难度</td>
+					<td>简单（硬件）</td>
+					<td>中</td>
+					<td>简单（容器部署）</td>
+			</tr>
+			<tr>
+					<td>用户权限管理</td>
+					<td>✅ 支持</td>
+					<td>不支持</td>
+					<td>✅ 支持</td>
+			</tr>
+			<tr>
+					<td>日志与审计</td>
+					<td>不便查询</td>
+					<td>不支持</td>
+					<td>✅ 支持</td>
+			</tr>
+			<tr>
+					<td>内网服务代理能力</td>
+					<td>✅ 自动配置</td>
+					<td>需端口映射</td>
+					<td>✅ 自动代理</td>
+			</tr>
+	</tbody>
 </table></div>
 <hr>
 <h2 id="五延伸用途不仅仅是访问网站">五、延伸用途：不仅仅是访问网站
@@ -440,17 +447,20 @@
 <hr>
 <h2 id="结语">结语
 </h2><p>Next-Terminal 不仅是一款优秀的企业级远程运维平台，它也<strong>非常适合家庭用户</strong>使用。通过构建统一、安全的访问入口，我们不再需要担心公网攻击、不再依赖繁琐的 VPN 配置，也不需要冒着暴露内网的风险。</p>
-<blockquote>
-<p>家庭 IT 架构的安全，是每一个技术爱好者应当重视的课题。今天，从部署一个 Next-Terminal 开始，提升你的网络安全水平吧。</p></blockquote>
+
+    <blockquote>
+        <p>家庭 IT 架构的安全，是每一个技术爱好者应当重视的课题。今天，从部署一个 Next-Terminal 开始，提升你的网络安全水平吧。</p>
+
+    </blockquote>
 
 </section>
 
 
-    <footer class="article-footer">
+    <footer class="article-meta article-footer">
     
 
     
-    <section class="article-copyright">
+    <section class="article-copyright inline-meta">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
@@ -474,6 +484,30 @@
      
     
         
+
+        <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
     
 
     <footer class="site-footer">
@@ -482,114 +516,73 @@
         
             2023 - 
         
-        2025 牙刷刷
+        2026 牙刷刷
     </section>
     
     <section class="powerby">
         
-            牙刷刷的小站 版权所有 © 2025 <br/>
-        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+            <a href='https://beian.miit.gov.cn/' target='_blank'>沪ICP备2025132005号-1</a> | 牙刷刷的小站 版权所有 © 2026 <br/>
+         <br />
+        
     </section>
 </footer>
 
 
     
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+
+
+<script type="module">
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
     
-    <div class="pswp__bg"></div>
+    if (shouldLoad) {
+        gallery(articleContent);
 
-    
-    <div class="pswp__scroll-wrap">
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
 
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script>
+
+    <div class="mermaid-modal" id="mermaid-modal">
+    <div class="mermaid-modal-header">
+        <div class="mermaid-modal-controls">
+            <button data-zoom="-1">− Zoom Out</button>
+            <button data-zoom="0">Reset (100%)</button>
+            <button data-zoom="1">+ Zoom In</button>
+            <button data-zoom="fit">Fit to Screen</button>
         </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
+        <button class="mermaid-modal-close" id="mermaid-modal-close">✕ Close (Esc)</button>
     </div>
+    <div class="mermaid-modal-body" id="mermaid-modal-body">
+        <div class="mermaid-modal-content" id="mermaid-modal-content"></div>
+    </div>
+</div>
 
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script><script type="module">
+import { initMermaidPage } from '\/ts\/mermaid.js';
+initMermaidPage({"darkTheme":"dark","darkThemeVariables":{},"htmlLabels":true,"lightTheme":"default","lightThemeVariables":{},"look":"classic","securityLevel":"strict","transparentBackground":false});
+</script>
 
             </main>
         </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+        
+<script type="text/javascript" src="/ts/main.c1855c2791a08151def3fc8896ec2299b3d255b2e8f48d74c5357bbf87b4477b.js" defer></script>
 
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
 
     </body>
 </html>

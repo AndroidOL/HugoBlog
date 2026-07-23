@@ -83,7 +83,7 @@ Suppose you have a website at `http://192.168.1.100:8080` on your home network a
 5. Enable authentication and authorization;
 6. External users access through NT — the public server proxies requests to the NT gateway, which forwards to internal services.
 
-![NT Architecture](f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg)
+![NT Architecture](/uploads/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg)
 
 ---
 
@@ -104,7 +104,7 @@ iptables -A INPUT -p tcp -s <NT_Public_IP> --dport 8080 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8080 -j DROP
 ```
 
-![Firewall Configuration](550e8400-e29b-41d4-a716-446655440000.png)
+![Firewall Configuration](/uploads/550e8400-e29b-41d4-a716-446655440000.png)
 
 ---
 

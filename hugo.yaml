@@ -1,7 +1,8 @@
 baseURL: https://www.tianhao.me/
-languageCode: zh-CN
+localeCode: zh-CN
 title: 牙刷刷的小站
 copyright: 牙刷刷
+googleAnalytics: "G-3XEDP14XQG"
 
 theme: hugo-theme-stack
 
@@ -10,14 +11,14 @@ hasCJKLanguage: true
 
 languages:
   zh-cn:
-    languageName: 中文
+    label: 中文
     title: 牙刷刷的小站
     weight: 1
     params:
       sidebar:
         subtitle: 欢迎来到牙刷刷的小站
   en:
-    languageName: English
+    label: English
     title: Toothbrush's Blog
     weight: 2
     params:
@@ -40,7 +41,7 @@ params:
 
   footer:
     since: 2023
-    customText: 牙刷刷的小站 版权所有 © 2025
+    customText: "<a href='https://beian.miit.gov.cn/' target='_blank'>沪ICP备2025132005号-1</a> | 牙刷刷的小站 版权所有 © 2026"
 
   dateFormat:
     published: Jan 02, 2006
@@ -51,7 +52,7 @@ params:
     avatar:
       enabled: true
       local: true
-      src: img/avatar.png
+      src: /img/avatar.png
 
   article:
     math: false
@@ -62,7 +63,7 @@ params:
       default: "Licensed under CC BY-NC-SA 4.0"
 
   comments:
-    enabled: false  # 关闭评论，或者删掉整个 comments 块
+    enabled: true  # 关闭评论，或者删掉整个 comments 块
 
 menu:
   main: []
