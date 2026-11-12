@@ -3,6 +3,10 @@
 date = "2025-07-11T15:25:51+08:00"
 draft = false
 title = "Getting Started with Hugo Website Setup"
+tags = ["Hugo", "Static Site", "Blog Setup", "macOS", "GitHub Pages"]
+categories = ["Tutorial", "Tech"]
+description = "A comprehensive guide to building a Hugo static website from scratch on macOS, covering installation, theme setup, content creation, and GitHub Pages deployment."
+image = "/img/avatar.png"
 +++
 
 This article provides a detailed guide on how to build a Hugo static website from scratch on macOS without relying on Homebrew. It includes key operations such as adding a Git-based theme, modifying configurations, and creating content, helping you quickly set up your own high-performance blog.

@@ -2,6 +2,10 @@
 date = '2025-07-12T17:42:38+08:00'
 draft = false
 title = 'NT创意图志：一张图说清核心资产，家庭用户的好帮手'
+tags = ["AI绘图", "Gemini", "创意图片", "视觉设计"]
+categories = ["项目", "工具"]
+description = "展示使用 Google Gemini AI 生成的创意图片集，以视觉创意方式呈现 Next-Terminal 核心资产概念。"
+image = "/img/avatar.png"
 +++
 
 > ⚠️ **免责声明**  

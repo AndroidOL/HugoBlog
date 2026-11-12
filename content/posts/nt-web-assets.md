@@ -3,6 +3,9 @@ date = '2025-07-11T19:43:25+08:00'
 draft = false
 title = 'Next-Terminal：家庭内网安全访问解决方案'
 description = '探讨如何利用Next-Terminal构建安全的家庭内网访问方案，解决公网暴露风险问题'
+tags = ["Next-Terminal", "内网穿透", "网络安全", "家庭网络", "开源工具"]
+categories = ["教程", "技术"]
+image = "/img/avatar.png"
 +++
 
 # 家庭内网安全访问新方案：Next-Terminal的技术实践与应用

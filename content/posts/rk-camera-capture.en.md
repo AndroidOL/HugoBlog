@@ -2,6 +2,10 @@
 date = '2025-07-12T15:38:51+08:00'
 draft = false
 title = 'My Smart Assistant: A Time-Lapse System That Knows When to Be Lazy'
+tags = ["Time-Lapse", "OpenCV", "Python", "Rockchip", "Smart Monitoring", "Embedded"]
+categories = ["Project", "Tech"]
+description = "An intelligent time-lapse photography system using OpenCV change detection to capture only when needed, greatly reducing storage and post-production effort."
+image = "/img/avatar.png"
 +++
 
 There’s a quiet poetry flowing through everyday life, often unnoticed. I became fascinated with time-lapse photography because it compresses long stretches of time into captivating moments, letting us witness slow transformations with the naked eye—it’s like magic unfolding through time.

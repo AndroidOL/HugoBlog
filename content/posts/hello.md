@@ -2,6 +2,10 @@
 date = "2025-07-11T15:25:51+08:00"
 draft = false
 title = "Hugo 网站搭建入门"
+tags = ["Hugo", "静态网站", "博客搭建", "macOS", "GitHub Pages"]
+categories = ["教程", "技术"]
+description = "详细讲解如何在 macOS 环境下从零搭建 Hugo 静态网站，涵盖安装、主题配置、内容创建与 GitHub Pages 部署全流程。"
+image = "/img/avatar.png"
 +++
 
 本文详细讲解如何在 macOS 环境下，从零开始搭建 Hugo 静态网站，不依赖 Homebrew，包含 Git 主题添加、配置修改、内容创建等关键操作，帮助你快速搭建属于自己的高性能博客。

@@ -2,6 +2,10 @@
 date = '2025-07-12T17:10:27+08:00'
 draft = false
 title = 'My Smart Assistant 3.0: Building a Fully Automated "Time Screening Room"'
+tags = ["FFmpeg", "HEVC", "Hardware Encoding", "Automation", "Time-Lapse Video", "Rockchip"]
+categories = ["Project", "Tech"]
+description = "A fully automated time-lapse video merging system using Ramdisk and HEVC hardware encoding to produce daily high-quality videos from tens of thousands of photos."
+image = "/img/avatar.png"
 +++
 
 Welcome back to my "lazy" photography system series. In the previous chapters, we witnessed how an ordinary webcam was endowed with the ability to "think," and how I built an elegant and convenient "control room" for it. However, the story doesn't end there. Our clever photographer has been smartly "slacking off" every day, accurately capturing a vast number of valuable moments. These photos, like scattered pearls, contain the secrets of time, quietly resting deep within the server's hard drive.

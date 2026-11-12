@@ -1,7 +1,11 @@
 +++
 date = '2025-07-12T16:19:04+08:00'
 draft = false
-title = 'My Smart Assistant 2.0: Giving the “Lazy” Photography System a Panoramic Window'
+title = 'My Smart Assistant 2.0: Giving the "Lazy" Photography System a Panoramic Window'
+tags = ["Web Console", "Live Monitoring", "Time-Lapse Playback", "PHP", "Frontend"]
+categories = ["Project", "Tech"]
+description = "A web-based control console for the smart photography system, featuring live monitoring, tiered photo browsing, time-lapse video generation, and dark/light theme switching."
+image = "/img/avatar.png"
 +++
 
 It's been a while since I last shared my “lazy” photography system—the one that decides when to snap a photo and when to chill. This little helper has been quietly working for me all this time. But as time went on, a new pain point emerged: while its inner workings were smart, the way I interacted with it remained... primitive.
