@@ -5,7 +5,7 @@ title = 'NT创意图志：一张图说清核心资产，家庭用户的好帮手
 tags = ["AI绘图", "Gemini", "创意图片", "视觉设计"]
 categories = ["项目", "工具"]
 description = "展示使用 Google Gemini AI 生成的创意图片集，以视觉创意方式呈现 Next-Terminal 核心资产概念。"
-image = "/img/avatar.png"
+image = "/uploads/2e4f9b81-3cde-4082-a8aa-12f6a5b79277.webp"
 +++
 
 > ⚠️ **免责声明**  

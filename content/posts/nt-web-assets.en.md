@@ -5,7 +5,7 @@ title = 'Next-Terminal: A Secure Access Solution for Home Networks'
 description = 'Exploring how to use Next-Terminal to build a secure access solution for home networks and mitigate public exposure risks'
 tags = ["Next-Terminal", "Network Security", "Home Network", "Reverse Proxy", "Open Source"]
 categories = ["Tutorial", "Tech"]
-image = "/img/avatar.png"
+image = "/uploads/f47ac10b-58cc-4372-a567-0e02b2c3d479.jpg"
 +++
 
 # A New Secure Access Approach for Home Networks: Next-Terminal in Practice
