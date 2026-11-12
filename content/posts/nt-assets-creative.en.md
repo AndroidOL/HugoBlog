@@ -11,16 +11,16 @@ title = 'NT Creative Gallery: One Picture to Explain Core Assets – A Great Ass
 >  
 > If you have questions or request content removal, please contact us using the method at the bottom of this page.
 
-![2e4f9b81-3cde-4082-a8aa-12f6a5b79277](2e4f9b81-3cde-4082-a8aa-12f6a5b79277.webp)
+![2e4f9b81-3cde-4082-a8aa-12f6a5b79277](/uploads/2e4f9b81-3cde-4082-a8aa-12f6a5b79277.webp)
 
-![6f3a9f0c-7b26-4c0f-a79b-2e9f8f5e6fd0](6f3a9f0c-7b26-4c0f-a79b-2e9f8f5e6fd0.webp)
+![6f3a9f0c-7b26-4c0f-a79b-2e9f8f5e6fd0](/uploads/6f3a9f0c-7b26-4c0f-a79b-2e9f8f5e6fd0.webp)
 
-![938db72a-2b1c-4a2f-9e5f-45d3e2f6c70f](938db72a-2b1c-4a2f-9e5f-45d3e2f6c70f.webp)
+![938db72a-2b1c-4a2f-9e5f-45d3e2f6c70f](/uploads/938db72a-2b1c-4a2f-9e5f-45d3e2f6c70f.webp)
 
-![b051a6ee-c3a0-44d8-bb38-52e7d9b08ed9](b051a6ee-c3a0-44d8-bb38-52e7d9b08ed9.webp)
+![b051a6ee-c3a0-44d8-bb38-52e7d9b08ed9](/uploads/b051a6ee-c3a0-44d8-bb38-52e7d9b08ed9.webp)
 
-![cba2794c-6e0e-4382-973d-75b2d2f2c72a](cba2794c-6e0e-4382-973d-75b2d2f2c72a.webp)
+![cba2794c-6e0e-4382-973d-75b2d2f2c72a](/uploads/cba2794c-6e0e-4382-973d-75b2d2f2c72a.webp)
 
-![f1707f1a-31a7-49f5-9582-621c024a2fbe](f1707f1a-31a7-49f5-9582-621c024a2fbe.webp)
+![f1707f1a-31a7-49f5-9582-621c024a2fbe](/uploads/f1707f1a-31a7-49f5-9582-621c024a2fbe.webp)
 
 Get in touch (Google Mail): wth88888888

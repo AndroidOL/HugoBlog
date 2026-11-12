@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# Hugo 构建产物与锁文件
+/public/
+.hugo_build.lock

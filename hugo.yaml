@@ -1,35 +1,35 @@
 baseURL: https://www.tianhao.me/
-languageCode: zh-CN
 title: 牙刷刷的小站
 copyright: 牙刷刷
 
 theme: hugo-theme-stack
 
-DefaultContentLanguage: zh-cn
-hasCJKLanguage: true
+locale: zh-CN
+defaultContentLanguage: zh-cn
+timeZone: Asia/Shanghai
 
 languages:
   zh-cn:
-    languageName: 中文
+    label: 中文
     title: 牙刷刷的小站
-    weight: 1
+    hasCJKLanguage: true
     params:
       sidebar:
         subtitle: 欢迎来到牙刷刷的小站
   en:
-    languageName: English
+    label: English
     title: Toothbrush's Blog
-    weight: 2
     params:
       sidebar:
         subtitle: Welcome to Toothbrush's blog
 
+services:
+  googleAnalytics:
+    id: G-3XEDP14XQG
+
 pagination:
   pagerSize: 5
 
-permalinks:
-  post: /p/:slug/
-  page: /:slug/
 
 params:
   mainSections:
@@ -40,11 +40,12 @@ params:
 
   footer:
     since: 2023
-    customText: 牙刷刷的小站 版权所有 © 2025
+    customText: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">沪ICP备2025132005号-1</a> | 牙刷刷的小站
 
   dateFormat:
     published: Jan 02, 2006
     lastUpdated: Jan 02, 2006 15:04 MST
+
   sidebar:
     emoji: "🍥"
     subtitle: 一个小小的博客，分享生活点滴
@@ -56,13 +57,19 @@ params:
   article:
     math: false
     toc: true
-    readingTime: true
+    readingTime: false
     license:
       enabled: true
       default: "Licensed under CC BY-NC-SA 4.0"
 
   comments:
-    enabled: false  # 关闭评论，或者删掉整个 comments 块
+    enabled: false
+
+  defaultImage:
+    opengraph:
+      enabled: true
+      local: false
+      src: /img/avatar.png
 
 menu:
   main: []
@@ -74,32 +81,17 @@ menu:
         icon: brand-github
 
 markup:
-    goldmark:
-        extensions:
-            passthrough:
-                enable: true
-                delimiters:
-                    block:
-                        - - \[
-                          - \]
-                        - - $$
-                          - $$
-                    inline:
-                        - - \(
-                          - \)
-        renderer:
-            ## Set to true if you have HTML content inside Markdown
-            unsafe: true
-    tableOfContents:
-        endLevel: 4
-        ordered: true
-        startLevel: 2
-    highlight:
-        noClasses: false
-        codeFences: true
-        guessSyntax: true
-        lineNoStart: 1
-        lineNos: true
-        lineNumbersInTable: true
-        tabWidth: 4
-
+  goldmark:
+    renderer:
+      unsafe: false
+  tableOfContents:
+    endLevel: 4
+    ordered: true
+    startLevel: 2
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    lineNumbersInTable: true
+    tabWidth: 4
