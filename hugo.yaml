@@ -69,7 +69,7 @@ params:
   sidebar:
     emoji: "🍥"
     subtitle: 一个小小的博客，分享生活点滴
-    avatar: img/avatar.png
+    avatar: /img/avatar.png
 
   article:
     math: false
