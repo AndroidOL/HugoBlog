@@ -1,13 +1,4 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /drafts/
-Disallow: /static/
-Disallow: /resources/
-Disallow: /404.html
-Disallow: /README.md
+Disallow:
 
-# 如果你有sitemap.xml，告诉搜索引擎它的位置
-Sitemap: https://your-domain.com/sitemap.xml
-
-# 抓取频率限制（可选）
-Crawl-delay: 10
+Sitemap: https://www.tianhao.me/sitemap.xml
